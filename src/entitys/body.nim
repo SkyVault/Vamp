@@ -6,6 +6,12 @@ type
     position*: V2
     size*: V2
 
+proc newBody* (x, y, w, h = 0.0): Body=
+  Body(
+    position: newV2(x, y),
+    size: newV2(w, h)
+  )
+
 proc x* (body: Body): auto = body.position.x
 proc y* (body: Body): auto = body.position.y
 proc width* (body: Body): auto = body.size.x
