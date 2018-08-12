@@ -2,7 +2,7 @@ import
   Coral/[ecs, gameMath]
 
 type
-  Body = ref object of Component
+  Body* = ref object of Component
     position*: V2
     size*: V2
 
