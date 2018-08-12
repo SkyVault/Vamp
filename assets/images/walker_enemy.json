@@ -1,0 +1,26 @@
+{ "frames": {
+   "walker_enemy.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 26, "h": 21 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 3, "y": 9, "w": 26, "h": 21 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.8.1",
+  "image": "/home/dustin/Documents/Nim_Projects/VectorGuy/assets/images/walker_enemy.png",
+  "format": "RGBA8888",
+  "size": { "w": 32, "h": 32 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

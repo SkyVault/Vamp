@@ -1,0 +1,66 @@
+{ "frames": {
+   "player 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 25 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 5, "w": 10, "h": 25 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   },
+   "player 1.aseprite": {
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 24 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 6, "w": 10, "h": 24 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   },
+   "player 2.aseprite": {
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 23 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 7, "w": 10, "h": 23 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   },
+   "player 3.aseprite": {
+    "frame": { "x": 30, "y": 0, "w": 10, "h": 22 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 8, "w": 10, "h": 22 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   },
+   "player 4.aseprite": {
+    "frame": { "x": 40, "y": 0, "w": 10, "h": 23 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 7, "w": 10, "h": 23 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   },
+   "player 5.aseprite": {
+    "frame": { "x": 50, "y": 0, "w": 10, "h": 24 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 6, "w": 10, "h": 24 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.8.1",
+  "image": "/home/dustin/Documents/Nim_Projects/VectorGuy/assets/images/player.png",
+  "format": "RGBA8888",
+  "size": { "w": 192, "h": 32 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

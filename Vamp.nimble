@@ -10,4 +10,3 @@ bin           = @["Vamp"]
 # Dependencies
 
 requires "nim >= 0.18.0"
-requires "https://github.com/SkyVault/CoralFramework"
