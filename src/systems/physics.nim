@@ -4,7 +4,7 @@ import
   ../maths,
   ../art,
   ../body,
-  ../tiled,
+  nim_tiled,
   math
 
 type
@@ -57,10 +57,27 @@ var tiledObjects    = newSeq[PhysicsObject]()
 var physicsEntities = newSeq[Entity]()
 
 proc SetTiledObjects* (objs: seq[TiledObject])=
+  discard """
+TiledPolygon = ref object of TiledObject
+  points: seq[(float, float)]
+
+TiledPolyline = ref object of TiledObject
+  points: seq[(float, float)]
+
+TiledPoint = ref object of TiledObject
+
+TiledEllipse = ref object of TiledObject
+  """
   for o in objs:
+    if o of TiledPolygon or
+       o of TiledPoint or
+       o of TiledEllipse or
+       o of TiledPolyline:
+      continue
+
     tiledObjects.add(newPhysicsObject(
       o.x, o.y, o.width, o.height,
-      o.typeName
+      o.objectType
     ))
 
 proc placeMeeting* (point: V2): PhysicsObject=

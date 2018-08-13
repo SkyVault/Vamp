@@ -10,3 +10,5 @@ bin           = @["Vamp"]
 # Dependencies
 
 requires "nim >= 0.18.0"
+requires "sdl2_nim"
+requires "nim_tiled"

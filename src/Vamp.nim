@@ -4,7 +4,7 @@ import
   times,
   art,
   items,
-  tiled,
+  nim_tiled,
   body,
   ecs,
   maths,
@@ -39,7 +39,14 @@ makeEntity("Player", 100, 0)
 makeEntity("Walker", 200 - 48, 0)
 makeEntity("Sword", 200, 0)
 
-SetTiledObjects(map.objects)
+var total = newSeq[TiledObject]()
+for group in map.objectGroups:
+  for o in group.objects:
+    total.add(o)
+
+SetTiledObjects(total)
+
+let img = assets.get(Image, "tiles")
 
 # Game loop
 while CurrentGameState() != Quiting:
@@ -64,7 +71,7 @@ while CurrentGameState() != Quiting:
   MainCamera.zoom = 4
   
   EntityWorld.draw()
-  R2D.drawTiledMap(map)
+  R2D.drawTiledMap(map, img)
   Scenery.draw()
 
   R2D.renderPresent()

@@ -2,6 +2,8 @@ import
   maths,
   body,
 
+  nim_tiled,
+
   sdl2/sdl, sdl2/sdl_image as img,
   sdl2/sdl_gfx_primitives as gfx,
   sdl2/sdl_gfx_primitives_font as font
@@ -75,25 +77,25 @@ proc loadImage* (renderer: Renderer, path: string): Image=
   result.load(renderer, path)
 
 # blend
-proc blend(obj: Image): sdl.BlendMode =
+proc blend* (obj: Image): sdl.BlendMode =
   var blend: sdl.BlendMode
   if obj.texture.getTextureBlendMode(addr(blend)) == 0:
     return blend
   else:
     return sdl.BlendModeBlend
 
-proc `blend=`(obj: Image, mode: sdl.BlendMode) {.inline.} =
+proc `blend=`* (obj: Image, mode: sdl.BlendMode) {.inline.} =
   discard obj.texture.setTextureBlendMode(mode)
 
 # alpha
-proc alpha(obj: Image): int =
+proc alpha* (obj: Image): int =
   var alpha: uint8
   if obj.texture.getTextureAlphaMod(addr(alpha)) == 0:
     return alpha
   else:
     return 255
 
-proc `alpha=`(obj: Image, alpha: int) =
+proc `alpha=`* (obj: Image, alpha: int) =
   discard obj.texture.setTextureAlphaMod(alpha.uint8)
 
 proc setColor* (renderer: sdl.Renderer, c: (float, float,float,float))=
@@ -162,3 +164,19 @@ proc lineRect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
     (current_color[2] * 255).uint8,
     (current_color[3] * 255).uint8,
   )
+
+proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=
+  let tileset = map.tilesets[0]
+
+  for layer in map.layers:
+    var tiles = layer.tiles
+    for y in 0..<layer.height:
+      for x in 0..<layer.width:
+        let index = x + y * layer.width
+        let gid = tiles[index]
+
+        if gid != 0:
+          let quad = tileset.regions[gid - 1]
+          var region = newRegion(quad.x.float, quad.y.float, quad.width.float, quad.height.float)
+          
+          draw(renderer, texture, region, x.float * map.tilewidth.float, y.float * map.tileheight.float)
