@@ -63,6 +63,9 @@ while CurrentGameState() != Quiting:
     if e.kind == sdl.Quit: Quit()
     inputHandleEvent(e)
 
+  if GameClock.ticks mod 100 == 0:
+    echo GameClock.fps
+
   platform.update()
 
   Scenery.update()

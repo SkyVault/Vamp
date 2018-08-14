@@ -12,7 +12,7 @@ type
         components: Table[string, Component]
 
     System* = ref object
-        worldRef: World
+        worldRef*: World
         matchList: seq[string]
 
         preUpdate:  proc(s: System)

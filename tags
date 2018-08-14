@@ -74,6 +74,7 @@ draw	src/art.nim	/^proc draw* (renderer: sdl.Renderer, obj: Image, reg: Region, 
 draw	src/art.nim	/^proc draw* (renderer: sdl.Renderer, obj: Image, x, y: float, rot = 0.0, flip = false, ox = -1, oy = -1): bool {.discardable.}=$/;"	f
 draw	src/ecs.nim	/^proc draw* (world: World)=$/;"	f
 draw	src/scenery.nim	/^proc draw* (sc: SceneManager)=$/;"	f
+draw	src/systems/ai.nim	/^  draw=proc(sys: System, self: Entity)=$/;"	t
 draw	src/systems/physics.nim	/^  draw = proc(sys: System, self: Entity)=$/;"	t
 draw	src/systems/renderable.nim	/^  draw = proc(s: System, e: Entity)=$/;"	t
 drawTiledMap	src/art.nim	/^proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=$/;"	f
@@ -108,6 +109,7 @@ kill	src/ecs.nim	/^proc kill* (self: Entity)=$/;"	f
 lineRect	src/art.nim	/^proc lineRect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=$/;"	f
 load	src/art.nim	/^proc load* (obj: Image, renderer: sdl.Renderer, file: string): bool {.discardable.} =$/;"	f
 load	src/items.nim	/^  load = proc(sys: System, self: Entity)=$/;"	t
+load	src/systems/ai.nim	/^  load=proc(sys: System, self: Entity)=$/;"	t
 load	src/systems/enemies.nim	/^  load = proc(sys: System, self: Entity)=$/;"	t
 load	src/systems/player.nim	/^  load = proc(sys: System, self: Entity)=$/;"	t
 load	src/systems/renderable.nim	/^  load = proc(sys: System, self: Entity)=$/;"	t
@@ -120,6 +122,7 @@ mouseDeltaY	src/input.nim	/^proc mouseDeltaY* (): float=return input.mouse_y - i
 mousePos	src/input.nim	/^proc mousePos* (): (float, float)=$/;"	f
 mouseX	src/input.nim	/^proc mouseX* (): float= return input.mouse_x$/;"	f
 mouseY	src/input.nim	/^proc mouseY* (): float= return input.mouse_y$/;"	f
+newAi	src/systems/ai.nim	/^proc newAi* (update = updateDef): auto=$/;"	f
 newBody	src/body.nim	/^proc newBody* (x, y, w, h: float): Body=$/;"	f
 newEnemy	src/systems/enemies.nim	/^proc newEnemy* (enemyType: EnemyType): Enemy=$/;"	f
 newImage	src/art.nim	/^proc newImage* (): Image = Image(texture: nil, w: 0, h: 0)$/;"	f
@@ -149,9 +152,11 @@ update	src/ecs.nim	/^proc update* (world: World)=$/;"	f
 update	src/items.nim	/^  update = proc(sys: System, self: Entity)=$/;"	t
 update	src/platform.nim	/^proc update* ()=$/;"	f
 update	src/scenery.nim	/^proc update* (sc: SceneManager)=$/;"	f
+update	src/systems/ai.nim	/^  update=proc(sys: System, self: Entity)=$/;"	t
 update	src/systems/enemies.nim	/^  update = proc(sys: System, self: Entity)=$/;"	t
 update	src/systems/physics.nim	/^  update = proc(sys: System, self: Entity)=$/;"	t
 update	src/systems/player.nim	/^  update = proc(s: System, self: Entity)=$/;"	t
+updateDef	src/systems/ai.nim	/^proc updateDef(world: World, self: Entity)= discard$/;"	f
 w	src/art.nim	/^proc w* (obj: Image): int {.inline.} = return obj.w$/;"	f
 width	src/body.nim	/^proc width* (b: Body): float= b.size.x$/;"	f
 width=	src/body.nim	/^proc `width=`* (b: Body, v: float) = b.size.x = v$/;"	o
