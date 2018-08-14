@@ -98,8 +98,9 @@ proc alpha* (obj: Image): int =
 proc `alpha=`* (obj: Image, alpha: int) =
   discard obj.texture.setTextureAlphaMod(alpha.uint8)
 
-proc setColor* (renderer: sdl.Renderer, c: (float, float,float,float))=
-  current_color = c
+
+proc setColor* [T](renderer: sdl.Renderer, c: (T, T,T,T))=
+  current_color = (c[0].float,c[1].float,c[2].float,c[3].float)
 
 proc draw* (renderer: sdl.Renderer, obj: Image, x, y: float, rot = 0.0, flip = false, ox = -1, oy = -1): bool {.discardable.}=
   var dx = (x - camera.position.x) * camera.zoom

@@ -1,6 +1,5 @@
 import
-  ../ecs,
-  ../art,
+  ../ecs, ../art,
   ../platform,
   ../body,
   ../items,
@@ -12,6 +11,7 @@ import
 type
   Player* = ref object of Component
     invatory*: seq[Entity]
+    respawn: V2
 
 proc newPlayer* (): Player=
   result = Player(
@@ -21,13 +21,21 @@ proc newPlayer* (): Player=
 const SPEED = 300.0
 
 #(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
-var PlayerController = EntityWorld.createSystem(
+EntityWorld.createSystem(
   @["Body", "Player", "PhysicsBody", "Sprite"],
   load = proc(sys: System, self: Entity)=
-    let phys = self.get PhysicsBody
+    var phys = self.get PhysicsBody
+    var body = self.get Body
+    var player = self.get Player
+    self.get(Player).respawn = body.position
     
     phys.solidsCollisionCallback = proc(o: PhysicsObject)=
-      discard
+      case o.physicsType:
+      of PhysicsType.Spawn:
+        player.respawn = Vec2(o.position.x, body.y)
+      of PhysicsType.Kill:
+        self.get(Body).position = player.respawn
+      else: discard
   ,
   update = proc(s: System, self: Entity)=
     let body = self.get Body
@@ -50,7 +58,7 @@ var PlayerController = EntityWorld.createSystem(
       phys.velocity.y -= SPEED * GameClock.dt * 15
 
     if isKeyDown(Key.z) and phys.isOnGround:
-      phys.velocity.y -= 400.0
+      phys.velocity.y -= 300.0
 
     var camera = MainCamera()
 

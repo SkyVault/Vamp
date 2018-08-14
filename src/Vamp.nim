@@ -35,9 +35,12 @@ assets.add(R2D.loadImage "assets/images/items.png", "items")
 
 let map = loadTiledMap "assets/maps/map_1.tmx"
 
-makeEntity("Player", 100, 0)
-makeEntity("Walker", 200 - 48, 0)
-makeEntity("Sword", 200, 0)
+makeEntity("Player", 400, 400)
+
+makeEntity("WiseOldWoman", 460, 300)
+
+makeEntity("Walker", 400 - 128, 400)
+makeEntity("Sword", 198, 0)
 
 var total = newSeq[TiledObject]()
 for group in map.objectGroups:

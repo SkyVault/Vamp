@@ -3,6 +3,7 @@ import
     ecs,
     body,
     items,
+    platform,
     systems/physics,
     systems/renderable,
     systems/player,
@@ -31,6 +32,16 @@ const Entities = {
         result.add(newPhysicsBody())
         result.add(newSprite(assets.get(Image, "items"), newRegion(0, 0, 22, 5)))
         result.add(Item()),
+
+    "WiseOldWoman": proc(x, y: float): Entity=
+        var img = R2D.loadImage("assets/images/old_lady.png")
+        result = EntityWorld.createEntity()
+        result.add(newBody(x, y, 18, 27))
+        result.add(newPhysicsBody())
+        result.add(newSprite(img, newRegion(8, 5, 18, 27)))
+
+        var sprite = result.get Sprite
+        sprite.color = (1.0, 0.0, 0.0, 1.0)
 
 }.toTable
 

@@ -34,7 +34,7 @@ proc newSprite* (img: Image, reg: Region): Sprite=
   )
 
 #(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
-var RectRendererSystem = EntityWorld.createSystem(
+EntityWorld.createSystem(
   @["Body", "RectangleComponent"],
   load = proc(sys: System, self: Entity)=
     discard
@@ -43,6 +43,7 @@ var RectRendererSystem = EntityWorld.createSystem(
     let body = e.get(Body)
     let rect = e.get(RectangleComponent)
 
+    R2D.setColor rect.color
     R2D.rect(body.x, body.y, body.width, body.height)
   )
 
@@ -59,5 +60,6 @@ var SpriteRendererSystem = EntityWorld.createSystem(
     let img = sprite.image
     let reg = sprite.region
   
+    R2D.setColor sprite.color
     R2D.draw(img, reg, sprite.offset.x + body.x, sprite.offset.y +  body.y, sprite.rotation, sprite.flip)
   )

@@ -11,6 +11,8 @@ type
   PhysicsType* {.pure.} = enum
     Static,
     Dynamic,
+    Kill,
+    Spawn,
     Sensor,
     Ladder
 
@@ -39,6 +41,10 @@ proc newPhysicsObject* (x, y, w, h: float, typeName: string): PhysicsObject=
   case typeName:
   of "Ladder":
     result.physicsType = PhysicsType.Ladder
+  of "Spawn":
+    result.physicsType = PhysicsType.Spawn
+  of "Kill":
+    result.physicsType = PhysicsType.Kill
   else: discard
 
 proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
@@ -86,7 +92,7 @@ proc placeMeeting* (point: V2): PhysicsObject=
   for o in tiledObjects:
     if o.contains(point): return o
 
-var PhysicsSystem = EntityWorld.createSystem(
+EntityWorld.createSystem(
   @["Body", "PhysicsBody"],
 
   draw = proc(sys: System, self: Entity)=
@@ -114,7 +120,9 @@ var PhysicsSystem = EntityWorld.createSystem(
     var phys = self.get PhysicsBody
 
     var scaled_y_gravity = GRAVITY[1] * phys.gravity_scale
-    scaled_y_gravity *= (if phys.velocity.y > 0: 2.0 else: 1.0)
+    var scaled_x_friction = phys.friction
+    scaled_y_gravity *= (if phys.velocity.y > 0: 3.0 else: 1.0)
+    scaled_x_friction *= (if not phys.isOnGround: 3.0 else: 1.0)
 
     if not phys.isOnLadder:
       phys.velocity.y += scaled_y_gravity * GameClock.dt
@@ -125,24 +133,32 @@ var PhysicsSystem = EntityWorld.createSystem(
     phys.isOnGround = false
     phys.isOnLadder = false
 
+    var colliders = newSeq[PhysicsObject]()
+
     for o in tiledObjects:
       var collided = false
-      if o.contains(xbody) and o.physicsType != PhysicsType.Ladder:
+      if o.contains(xbody) and o.physicsType == PhysicsType.Static or o.physicsType == PhysicsType.Dynamic:
         collided = true
         xbody = body
       
       if o.contains(ybody):
-        collided = true
-        phys.isOnGround = true
-        phys.velocity.y = 0
-
-        if o.physicsType == PhysicsType.Ladder:
+        case o.physicsType:
+        of PhysicsType.Kill, PhysicsType.Spawn:
+          collided = true
+        of PhysicsType.Ladder:
           phys.isOnLadder = true
-        else:
+          phys.isOnGround = true
+          phys.velocity.y = 0
+          collided = true
+        of PhysicsType.Static, PhysicsType.Dynamic:
           ybody.y = o.y - ybody.height
+          phys.isOnGround = true
+          phys.velocity.y = 0
+          collided = true
+        else: discard
       
       if collided:
-        phys.solidsCollisionCallback(o)
+        colliders.add(o)
 
     phys.collisions.setLen(0)
     for e in physicsEntities:
@@ -151,12 +167,29 @@ var PhysicsSystem = EntityWorld.createSystem(
       if ebod.contains(body):
         phys.collisions.add(e)
 
-    phys.velocity *= math.pow(phys.friction, GameClock.dt)
+    phys.velocity *= math.pow(scaled_x_friction, GameClock.dt)
 
     body.position = Vec2(xbody.x, ybody.y)
+
+    for o in colliders:
+      phys.solidsCollisionCallback(o)
+
   ,
   preDraw = proc(s: System)=
+    if platform.Debugging == false: return
     for o in tiledObjects:
+      case o.physicsType:
+      of PhysicsType.Static, PhysicsType.Dynamic:
+        R2d.setColor((1, 1, 1, 1))
+      of PhysicsType.Ladder:
+        R2d.setColor((1.0, 0.5, 1.0, 1.0))
+      of PhysicsType.Spawn:
+        R2d.setColor((0.0, 1.0, 0.2, 1.0))
+      of PhysicsType.Kill:
+        R2d.setColor((1.0, 0.2, 0.0, 1.0))
+      of PhysicsType.Sensor:
+        R2d.setColor((0.0, 0.2, 1.0, 1.0))
+
       R2D.lineRect(o.x, o.y, o.width, o.height)
   )
 
