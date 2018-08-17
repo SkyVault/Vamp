@@ -4,6 +4,7 @@ import
   times,
   art,
   items,
+  dialog,
   nim_tiled,
   body,
   ecs,
@@ -17,7 +18,10 @@ import
   scenery,
   assets,
   platform,
-  entity_assembler
+  entity_assembler,
+  json,
+  os,
+  system
 
 if platform.init((1280, 720), "Hello World") == Failure:
   discard
@@ -28,17 +32,20 @@ let time = (200 * cpuTime() + epochTime()).int64
 randomize(time)
 
 # Loadeng assets
-assets.add(R2D.loadImage "assets/images/player.png", "player")
-assets.add(R2D.loadImage "assets/images/tilesheet.png", "tiles")
-assets.add(R2D.loadImage "assets/images/walker_enemy.png", "walker_enemy")
-assets.add(R2D.loadImage "assets/images/items.png", "items")
+assets.addImage(R2D.loadImage "assets/images/player.png", "player")
+assets.addImage(R2D.loadImage "assets/images/tilesheet.png", "tiles")
+assets.addImage(R2D.loadImage "assets/images/walker_enemy.png", "walker_enemy")
+assets.addImage(R2D.loadImage "assets/images/items.png", "items")
+
+# Load json datae
+assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
+#for file in walkFiles("./assets/dialog"):
+  #echo file
 
 let map = loadTiledMap "assets/maps/map_1.tmx"
 
 makeEntity("Player", 400, 400)
-
 makeEntity("WiseOldWoman", 460, 300)
-
 makeEntity("Walker", 400 - 128, 400)
 makeEntity("Sword", 198, 0)
 
@@ -49,7 +56,7 @@ for group in map.objectGroups:
 
 SetTiledObjects(total)
 
-let img = assets.get(Image, "tiles")
+let img = assets.getImage("tiles")
 
 # Game loop
 while CurrentGameState() != Quiting:
@@ -65,11 +72,14 @@ while CurrentGameState() != Quiting:
 
   if GameClock.ticks mod 100 == 0:
     echo GameClock.fps
-
+  
   platform.update()
 
-  Scenery.update()
-  EntityWorld.update()
+  if CurrentGameState() != GameState.Paused:
+    Scenery.update()
+    EntityWorld.update()
+
+  dialog.update()
 
   if isKeyPressed(Key.ESCAPE):
     Quit()
@@ -79,5 +89,7 @@ while CurrentGameState() != Quiting:
   EntityWorld.draw()
   R2D.drawTiledMap(map, img)
   Scenery.draw()
+
+  dialog.draw()
 
   R2D.renderPresent()

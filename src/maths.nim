@@ -1,9 +1,14 @@
+import math
+
 type
   V2* = ref object
     x*, y*: float
 
 proc Vec2* (x = 0.0, y = 0.0): V2=
   result = V2(x: x, y: y)
+
+proc distance* (v1, v2: V2): float=
+  result = math.sqrt(math.pow(v2.x - v1.x, 2) + math.pow(v2.y - v1.y, 2))
 
 proc `+`* (a, b: V2): V2= return Vec2(a.x + b.x, a.y + b.y)
 proc `-`* (a, b: V2): V2= return Vec2(a.x - b.x, a.y - b.y)

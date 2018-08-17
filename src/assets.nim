@@ -3,18 +3,20 @@ import
   sequtils,
   tables,
   typetraits,
-  typeinfo
+  typeinfo,
+  json
 
 var images = newTable[string, Image]()
+var jsons = newTable[string, JsonNode]()
 
-proc add* [T](i: T, id: string): T {.discardable.}=
-  if T.name == "Image":
-    images.add(id, i)
-  return i
+proc addJson* (j: JsonNode, id: string)=
+  jsons.add(id, j)
 
-proc get* (T: typedesc, id: string): auto=
-  if T.name == "Image":
-    return images[id]
+proc addImage* (i: Image, id: string)=
+  images.add(id, i)
+
+proc getImage* (id: string): auto= images[id]
+proc getJson* (id: string): auto= jsons[id]
 
 proc readJsonAnimation* (path: string)=
   discard

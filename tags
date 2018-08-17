@@ -34,6 +34,7 @@ $	src/body.nim	/^proc `$`* (o: Body): string=$/;"	o
 /=	src/maths.nim	/^proc `\/=`* (a: V2, b: (float, float))= a.x \/= b[0]; a.y \/= b[1]$/;"	o
 /=	src/maths.nim	/^proc `\/=`* (a: V2, b: float)= a.x \/= b; a.y \/= b$/;"	o
 CurrentGameState	src/platform.nim	/^proc CurrentGameState* (): auto = current_gamestate$/;"	f
+DialogBoxHandler	src/dialog.nim	/^template DialogBoxHandler* = dialogBox$/;"	t
 EntityWorld	src/ecs.nim	/^template EntityWorld* (): auto = world$/;"	t
 GameClock	src/platform.nim	/^template GameClock* (): auto = clock$/;"	t
 GameState	src/platform.nim	/^  GameState* = enum$/;"	t
@@ -53,8 +54,9 @@ WalkerPhysicsObject	src/systems/enemies.nim	/^proc WalkerPhysicsObject(self: Ent
 WalkerUpdate	src/systems/enemies.nim	/^proc WalkerUpdate(self: Entity)=$/;"	f
 Win	src/platform.nim	/^template Win* (): auto = window$/;"	t
 ZombieUpdate	src/systems/enemies.nim	/^proc ZombieUpdate(self: Entity)=$/;"	f
-add	src/assets.nim	/^proc add* [T](i: T, id: string): T {.discardable.}=$/;"	f
 add	src/ecs.nim	/^proc add* [T](self: Entity, component: T): T {.discardable.} =$/;"	f
+addImage	src/assets.nim	/^proc addImage* (i: Image, id: string)=$/;"	f
+addJson	src/assets.nim	/^proc addJson* (j: JsonNode, id: string)=$/;"	f
 alpha	src/art.nim	/^proc alpha* (obj: Image): int =$/;"	f
 alpha=	src/art.nim	/^proc `alpha=`* (obj: Image, alpha: int) =$/;"	o
 blend	src/art.nim	/^proc blend* (obj: Image): sdl.BlendMode =$/;"	f
@@ -70,8 +72,10 @@ default_preDraw	src/ecs.nim	/^proc default_preDraw      (s: System)            =
 default_preUpdate	src/ecs.nim	/^proc default_preUpdate    (s: System)            = discard$/;"	f
 default_render	src/ecs.nim	/^proc default_render       (s: System, e: Entity) = discard$/;"	f
 default_update	src/ecs.nim	/^proc default_update       (s: System, e: Entity) = discard$/;"	f
+distance	src/maths.nim	/^proc distance* (v1, v2: V2): float=$/;"	f
 draw	src/art.nim	/^proc draw* (renderer: sdl.Renderer, obj: Image, reg: Region, x, y: float, rot = 0.0, flip = false, ox = -1, oy = -1): bool {.discardable.}=$/;"	f
 draw	src/art.nim	/^proc draw* (renderer: sdl.Renderer, obj: Image, x, y: float, rot = 0.0, flip = false, ox = -1, oy = -1): bool {.discardable.}=$/;"	f
+draw	src/dialog.nim	/^proc draw* =$/;"	f
 draw	src/ecs.nim	/^proc draw* (world: World)=$/;"	f
 draw	src/scenery.nim	/^proc draw* (sc: SceneManager)=$/;"	f
 draw	src/systems/ai.nim	/^  draw=proc(sys: System, self: Entity)=$/;"	t
@@ -79,9 +83,10 @@ draw	src/systems/physics.nim	/^  draw = proc(sys: System, self: Entity)=$/;"	t
 draw	src/systems/renderable.nim	/^  draw = proc(s: System, e: Entity)=$/;"	t
 drawTiledMap	src/art.nim	/^proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=$/;"	f
 free	src/art.nim	/^proc free* (obj: Image) = sdl.destroyTexture(obj.texture)$/;"	f
-get	src/assets.nim	/^proc get* (T: typedesc, id: string): auto=$/;"	f
 get	src/ecs.nim	/^proc get* (self: Entity, T: typedesc): T =$/;"	f
 getAllThatMatch	src/ecs.nim	/^proc getAllThatMatch* (matchlist: seq[string]): seq[Entity]=$/;"	f
+getImage	src/assets.nim	/^proc getImage* (id: string): auto= images[id]$/;"	f
+getJson	src/assets.nim	/^proc getJson* (id: string): auto= jsons[id]$/;"	f
 getKeyInRange	src/input.nim	/^proc getKeyInRange(key: cint): int=$/;"	f
 goto	src/scenery.nim	/^proc goto* (sc: SceneManager, scene: Scene): Scene {.discardable.}=$/;"	f
 h	src/art.nim	/^proc h* (obj: Image): int {.inline.} = return obj.h$/;"	f
@@ -122,7 +127,7 @@ mouseDeltaY	src/input.nim	/^proc mouseDeltaY* (): float=return input.mouse_y - i
 mousePos	src/input.nim	/^proc mousePos* (): (float, float)=$/;"	f
 mouseX	src/input.nim	/^proc mouseX* (): float= return input.mouse_x$/;"	f
 mouseY	src/input.nim	/^proc mouseY* (): float= return input.mouse_y$/;"	f
-newAi	src/systems/ai.nim	/^proc newAi* (update = updateDef): auto=$/;"	f
+newAi	src/systems/ai.nim	/^proc newAi* (update:proc(world: World, self: Entity) = updateDef): auto=$/;"	f
 newBody	src/body.nim	/^proc newBody* (x, y, w, h: float): Body=$/;"	f
 newEnemy	src/systems/enemies.nim	/^proc newEnemy* (enemyType: EnemyType): Enemy=$/;"	f
 newImage	src/art.nim	/^proc newImage* (): Image = Image(texture: nil, w: 0, h: 0)$/;"	f
@@ -136,6 +141,7 @@ newScene	src/scenery.nim	/^proc newScene* (ev: proc(ev: SceneState)): Scene=$/;"
 newSprite	src/systems/renderable.nim	/^proc newSprite* (img: Image, reg: Region): Sprite=$/;"	f
 newSystem	src/ecs.nim	/^proc newSystem($/;"	f
 newWorld	src/ecs.nim	/^proc newWorld* (): World=$/;"	f
+oldLadyAi	src/systems/ai.nim	/^proc oldLadyAi* (world: World, self: Entity)=$/;"	f
 placeMeeting	src/systems/physics.nim	/^proc placeMeeting* (point: V2): PhysicsObject=$/;"	f
 pop	src/scenery.nim	/^proc pop* (sc: SceneManager): Scene {.discardable.}=$/;"	f
 preDraw	src/systems/physics.nim	/^  preDraw = proc(s: System)=$/;"	t
@@ -146,8 +152,10 @@ readJsonAnimation	src/assets.nim	/^proc readJsonAnimation* (path: string)=$/;"	f
 rect	src/art.nim	/^proc rect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=$/;"	f
 sdlRect	src/art.nim	/^proc sdlRect(r: Region): sdl.Rect=$/;"	f
 setColor	src/art.nim	/^proc setColor* [T](renderer: sdl.Renderer, c: (T, T,T,T))=$/;"	f
+showDialog	src/dialog.nim	/^proc showDialog* (node: JsonNode, point: V2)=$/;"	f
 solidsCollisionCallback	src/systems/enemies.nim	/^    self.get(PhysicsBody).solidsCollisionCallback = proc(o: PhysicsObject)=$/;"	t
 solidsCollisionCallback	src/systems/player.nim	/^    phys.solidsCollisionCallback = proc(o: PhysicsObject)=$/;"	t
+update	src/dialog.nim	/^proc update* =$/;"	f
 update	src/ecs.nim	/^proc update* (world: World)=$/;"	f
 update	src/items.nim	/^  update = proc(sys: System, self: Entity)=$/;"	t
 update	src/platform.nim	/^proc update* ()=$/;"	f

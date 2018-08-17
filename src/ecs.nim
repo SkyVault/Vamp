@@ -37,7 +37,6 @@ proc default_destroy      (s: System, e: Entity) = discard
 proc default_preDraw      (s: System)            = discard
 
 proc add* [T](self: Entity, component: T): T {.discardable.} =
-    echo T.name
     self.components.add(T.name, component)
     return component
 
@@ -82,8 +81,7 @@ proc matches(s: System, e: Entity): bool=
 proc newWorld* (): World=
     World(
         entities: newSeq[Entity](),
-        systems: newSeq[System]()
-    )
+        systems: newSeq[System]())
 
 var world = newWorld()
 template EntityWorld* (): auto = world
