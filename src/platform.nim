@@ -1,5 +1,6 @@
 import
   sdl2/sdl,
+  sdl2/sdl_ttf as ttf,
   input
 
 var
@@ -49,6 +50,11 @@ proc init* (size: (int, int), title: string): Result=
     echo "ERROR:: Cannot initialize SDL: ", sdl.getError()
     result = Failure
     return 
+
+  if ttf.init() != 0:
+    echo "ERROR:: Cannot initialize SDL_ttf: ", ttf.getError()
+    result = Failure
+    return
 
   window = sdl.createWindow(
     title,

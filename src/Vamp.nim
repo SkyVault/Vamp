@@ -11,10 +11,7 @@ import
   maths,
   math,
   random,
-  systems/physics,
-  systems/enemies,
-  systems/player,
-  systems/renderable,
+  systems/[physics, enemies, player, renderable],
   scenery,
   assets,
   platform,
@@ -30,6 +27,8 @@ initInput()
 
 let time = (200 * cpuTime() + epochTime()).int64
 randomize(time)
+
+assets.addFont(R2D.loadFont("assets/fonts/arial.ttf", 32), "arial")
 
 # Loadeng assets
 assets.addImage(R2D.loadImage "assets/images/player.png", "player")
@@ -89,6 +88,9 @@ while CurrentGameState() != Quiting:
   EntityWorld.draw()
   R2D.drawTiledMap(map, img)
   Scenery.draw()
+
+  R2D.setColor((1, 1, 1, 1))
+  R2D.drawString(assets.getFont "arial", "Hello World :)", 10, 10)
 
   dialog.draw()
 

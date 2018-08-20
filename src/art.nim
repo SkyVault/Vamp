@@ -2,11 +2,19 @@ import
   maths,
   body,
 
+  sequtils,
+  os,
+  system,
   nim_tiled,
+  tables,
+  typetraits,
 
   sdl2/sdl, sdl2/sdl_image as img,
   sdl2/sdl_gfx_primitives as gfx,
-  sdl2/sdl_gfx_primitives_font as font
+  sdl2/sdl_gfx_primitives_font as font,
+  sdl2/sdl_ttf as ttf,
+
+  freetype/[freetype, fttypes]
 
 type
   Region* = ref object of RootObj
@@ -17,10 +25,33 @@ type
 
   Image* = ref ImageObj
   ImageObj = object of RootObj
-    texture: sdl.Texture # Image texture
-    w, h: int # Image dimensions
+    texture*: sdl.Texture # Image texture
+    w*, h*: int # Image dimensions
+
+  FontGlyph* = ref object
+    texture*: sdl.Texture
+    size*, bearing*: V2
+    advance*: int
+
+  Font* = ref object
+    face*: FT_Face
+    characters*: TableRef[char, FontGlyph]
 
 var current_color = (1.0, 1.0, 1.0, 1.0)
+
+template currentColorSDL* (): sdl.Color=
+  sdl.Color(
+    r: (current_color[0] * 255).uint8,
+    g: (current_color[1] * 255).uint8,
+    b: (current_color[2] * 255).uint8,
+    a: (current_color[3] * 255).uint8)
+
+proc getChar* (f: Font, c: char): FontGlyph=
+  result = f.characters[c]
+
+# Initialize font library
+var ft_context: FT_Library
+doAssert(FT_Init_FreeType(ft_context) == 0, "Failed to initialize freetype")
 
 proc newRegion* (x, y, w, h: float): Region=
   result = Region(
@@ -75,6 +106,45 @@ proc load* (obj: Image, renderer: sdl.Renderer, file: string): bool {.discardabl
 proc loadImage* (renderer: Renderer, path: string): Image=
   result = newImage()
   result.load(renderer, path)
+
+proc loadFont* (renderer: sdl.Renderer, path: string, size=32): ttf.Font=
+  result = ttf.openFont(path, size)
+
+# WIP
+# proc loadFont* (renderer: sdl.Renderer, path: string, size=32): Font=
+#   result = Font(face: nil, characters: newTable[char, FontGlyph]())
+# 
+#   if FT_New_Face(ft_context, path, 0, result.face) != 0:
+#     echo "Failed to load font: ", path
+#     return
+# 
+#   discard FT_Set_Pixel_Sizes(result.face, 0, size.FT_UInt)
+#   const RANGE = 128 
+# 
+#   for i in 0..<RANGE:
+#     if FT_Load_Char(result.face, i.FT_U_Long, FT_LOAD_RENDER) != 0:
+#       echo "Font failed to load the char: ", i.char
+#       continue
+# 
+#     var glyph = FontGlyph(
+#       texture: sdl.createTexture(renderer, sdl.PIXELFORMAT_INDEX8, sdl.TEXTUREACCESS_STATIC, result.face.glyph.bitmap.width.int, result.face.glyph.bitmap.rows.int),
+#       size: Vec2(result.face.glyph.bitmap.width.float, result.face.glyph.bitmap.rows.float),
+#       bearing: Vec2(result.face.glyph.bitmap_left.float, result.face.glyph.bitmap_top.float),
+#       advance: result.face.glyph.advance.x.int
+#     )
+# 
+# #     var validTexture = newSeq[uint8](result.face.glyph.bitmap.width.int * result.face.glyph.bitmap.rows.int)
+# #     var j = 0
+# #     for ch in result.face.glyph.bitmap.buffer:
+# #       validTexture[j] = ch.uint8
+# #       inc j
+# 
+#     var g = result.face.glyph
+#     discard glyph.texture.updateTexture(nil, g.bitmap.buffer, g.bitmap.width.int)
+#     let msg = sdl.getError()
+#     echo msg
+# 
+#     result.characters.add(i.char, glyph)
 
 # blend
 proc blend* (obj: Image): sdl.BlendMode =
@@ -181,3 +251,23 @@ proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, o
           var region = newRegion(quad.x.float, quad.y.float, quad.width.float, quad.height.float)
           
           draw(renderer, texture, region, x.float * map.tilewidth.float, y.float * map.tileheight.float)
+
+proc drawString* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float)=
+  # Render surface
+  proc render(renderer: sdl.Renderer,
+            surface: sdl.Surface, x, y: int): bool =
+    result = true
+    var rect = sdl.Rect(x: x, y: y, w: surface.w, h: surface.h)
+    # Convert to texture
+    var texture = sdl.createTextureFromSurface(renderer, surface)
+    if texture == nil:
+      return false
+    # Render texture
+    if renderer.renderCopy(texture, nil, addr(rect)) == 0:
+      result = false
+    # Clean
+    destroyTexture(texture)
+
+  var s = font.renderUTF8_Solid(text, currentColorSDL())
+  discard renderer.render(s, x.int, y.int)
+  sdl.freeSurface(s)
