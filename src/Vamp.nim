@@ -23,7 +23,7 @@ import
   os,
   system
 
-if platform.init((1280, 720), "Hello World") == Failure:
+if platform.init((1280, 720), "DevWindow") == Failure:
   discard
 
 initInput()

@@ -15,7 +15,8 @@ type
     point: V2
 
 var dialogBox = DialogBoxHandlerO(
-  showing: false)
+  showing: false,
+  dialogs: @[])
 
 template DialogBoxHandler* = dialogBox
 
@@ -31,5 +32,13 @@ proc update* =
   discard
 
 proc draw* =
-  discard
+  if len(dialogBox.dialogs) == 0:
+    return
 
+  for d in dialogBox.dialogs:
+    echo d.point.x, " ", d.point.y
+    # Calucalate the size of the box
+    # Move it up
+    var size = Vec2(128, 64)
+    R2D.setColor((1.0, 1.0, 1.0, 1.0))
+    R2D.rect(d.point.x, d.point.y - size.y - 8.0, size.x, size.y)

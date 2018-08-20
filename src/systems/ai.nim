@@ -30,7 +30,7 @@ proc oldLadyAi* (world: World, self: Entity)=
     R2D.rect(body.x, body.y - 16, 16, 12)
 
     #platform.Pause()
-    showDialog(assets.getJson "sample")
+    showDialog(assets.getJson "sample", body.position)
 
 proc newAi* (update:proc(world: World, self: Entity) = updateDef): auto=
   result = Ai(update: update)
