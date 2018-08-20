@@ -252,12 +252,12 @@ proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, o
           
           draw(renderer, texture, region, x.float * map.tilewidth.float, y.float * map.tileheight.float)
 
-proc drawString* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float)=
+proc drawString* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float, scale=1.0)=
   # Render surface
   proc render(renderer: sdl.Renderer,
             surface: sdl.Surface, x, y: int): bool =
     result = true
-    var rect = sdl.Rect(x: x, y: y, w: surface.w, h: surface.h)
+    var rect = sdl.Rect(x: x, y: y, w: (surface.w.float * scale).int, h: (surface.h.float * scale).int)
     # Convert to texture
     var texture = sdl.createTextureFromSurface(renderer, surface)
     if texture == nil:
@@ -269,5 +269,44 @@ proc drawString* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: fl
     destroyTexture(texture)
 
   var s = font.renderUTF8_Solid(text, currentColorSDL())
-  discard renderer.render(s, x.int, y.int)
+  discard renderer.render(s, (x.int - camera.position.x.int) * camera.zoom.int, (y.int - camera.position.y.int) * camera.zoom.int)
   sdl.freeSurface(s)
+
+proc drawStringScaledToBox* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y, width, height: float)=
+  var w = 0.cint
+  var h = 0.cint
+  discard ttf.sizeText(font, text.cstring, addr w, addr h)
+
+  var scaleRate = 1.0 / (h.float / height.float)
+  drawString(renderer, font, text, x, y, scaleRate)
+
+proc drawStringInBox* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float, width, height: float)=
+  var ww = width * camera.zoom
+  var hh = height * camera.zoom
+
+  var lines: seq[(string, int)] = @[]
+  var build = ""
+  for c in text:
+    var temp = build & $c
+    
+    var w = 0.cint
+    var h = 0.cint
+    discard ttf.sizeText(font, temp.cstring, addr w, addr h)
+
+    if w.float >= ww:
+      lines.add((build, h.int))
+      build = $c
+    else:
+      build.add(c)
+
+  if build.len > 0:
+    var w = 0.cint
+    var h = 0.cint
+    discard ttf.sizeText(font, build.cstring, addr w, addr h)
+    lines.add((build, h.int))
+
+  var yy = 0
+  for tup in lines:
+    var (line, height) = tup
+    drawString(renderer, font, line, x, y + yy.float)
+    yy += (height.float / camera.zoom.float).int

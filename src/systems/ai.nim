@@ -5,7 +5,8 @@ import
   ../maths,
   ../art,
   ../dialog,
-  ../platform
+  ../platform,
+  json
 
 type
   Ai* = ref object of Component
@@ -30,7 +31,7 @@ proc oldLadyAi* (world: World, self: Entity)=
     R2D.rect(body.x, body.y - 16, 16, 12)
 
     #platform.Pause()
-    showDialog(assets.getJson "sample", body.position)
+    showDialog(assets.getJson("sample")["OldLady"], body.position)
 
 proc newAi* (update:proc(world: World, self: Entity) = updateDef): auto=
   result = Ai(update: update)
