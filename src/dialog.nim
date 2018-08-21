@@ -4,7 +4,8 @@ import
   sdl2/sdl,
   maths,
   json,
-  assets
+  assets,
+  input
 
 type
   DialogBoxHandlerO* = ref object
@@ -39,7 +40,24 @@ proc showDialog* (node: JsonNode, point: V2)=
   ))
 
 proc update* =
-  discard
+  if len(dialogBox.dialogs) == 0:
+    return
+
+  let dialog = dialogBox.dialogs[0]
+  let data = dialog.data[dialog.currentIndex]
+  if data.hasKey "options":
+    let options = data["options"]
+    let numOptions = options.len
+
+    if isKeyPressed(Key.Left):
+      dec dialogBox.optionIndex
+
+    if isKeyPressed(Key.Right):
+      inc dialogBox.optionIndex
+
+    dialogBox.optionIndex = dialogBox.optionIndex mod numOptions
+    if dialogBox.optionIndex < 0:
+      dialogBox.optionIndex = numOptions - 1
 
 proc draw* =
   if len(dialogBox.dialogs) == 0:
@@ -55,7 +73,7 @@ proc draw* =
     let dialog = dialogBox.dialogs[0]
     let data = dialog.data[dialog.currentIndex]
     var text = data["text"]
-    let font = assets.getFont "arial"
+    let font = assets.getFont "minecraft"
 
     R2D.setColor((1, 1, 1, 1))
     R2D.drawStringInBox(font, text.getStr(), d.point.x, d.point.y - size.y - 8.0, size.x, size.y)

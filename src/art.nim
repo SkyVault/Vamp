@@ -168,7 +168,6 @@ proc alpha* (obj: Image): int =
 proc `alpha=`* (obj: Image, alpha: int) =
   discard obj.texture.setTextureAlphaMod(alpha.uint8)
 
-
 proc setColor* [T](renderer: sdl.Renderer, c: (T, T,T,T))=
   current_color = (c[0].float,c[1].float,c[2].float,c[3].float)
 

@@ -30,6 +30,7 @@ randomize(time)
 
 assets.addFont(R2D.loadFont("assets/fonts/arial.ttf", 32), "arial")
 assets.addFont(R2D.loadFont("assets/fonts/Fipps-Regular.otf", 16), "fipps")
+assets.addFont(R2D.loadFont("assets/fonts/Minecraft.ttf", 16), "minecraft")
 
 # Loadeng assets
 assets.addImage(R2D.loadImage "assets/images/player.png", "player")

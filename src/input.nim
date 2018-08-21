@@ -479,7 +479,7 @@ proc inputHandleEvent* (ev: sdl.Event)=
 
     of sdl.MouseButtonUp:
         case ev.button.button:
-        of sdl.BUTTON_LEFT: 
+        of sdl.BUTTON_LEFT:
             input.mouse_left.state = 0
             input.mouse_left.last = 1
 
