@@ -209,6 +209,24 @@ proc draw* (renderer: sdl.Renderer, obj: Image, reg: Region, x, y: float, rot = 
   else:
     return false
 
+proc drawUnprojected* (renderer: sdl.Renderer, obj: Image, x, y, w, h: float, rot = 0.0, flip = false, ox = -1, oy = -1): bool {.discardable.}=
+  var dx = x
+  var dy = y
+  var dw = w
+  var dh = h
+  var rect = sdl.Rect(x: (int)dx, y: (int)dy, w: dw.int, h: dh.int)
+  var pnt = sdl.Point(x: (int)ox, y: (int)oy)
+  if renderer.renderCopyEx(
+    obj.texture,
+    nil,
+    addr(rect),
+    rot,
+    if ox < 0 or oy < 0: nil else: addr(pnt),
+    sdl.FLIP_NONE) == 0:
+    return true
+  else:
+    return false
+
 proc rect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
   var xx = (x - camera.position.x) * camera.zoom
   var yy = (y - camera.position.y) * camera.zoom
@@ -235,10 +253,28 @@ proc lineRect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
     (current_color[3] * 255).uint8,
   )
 
-proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=
+proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=
   let tileset = map.tilesets[0]
 
   for layer in map.layers:
+    if layer.properties.hasKey "fg": continue
+    var tiles = layer.tiles
+    for y in 0..<layer.height:
+      for x in 0..<layer.width:
+        let index = x + y * layer.width
+        let gid = tiles[index]
+
+        if gid != 0:
+          let quad = tileset.regions[gid - 1]
+          var region = newRegion(quad.x.float, quad.y.float, quad.width.float, quad.height.float)
+          
+          draw(renderer, texture, region, x.float * map.tilewidth.float, y.float * map.tileheight.float)
+
+proc drawTiledMapFg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=
+  let tileset = map.tilesets[0]
+
+  for layer in map.layers:
+    if not layer.properties.hasKey "fg": continue
     var tiles = layer.tiles
     for y in 0..<layer.height:
       for x in 0..<layer.width:
@@ -281,7 +317,7 @@ proc drawStringScaledToBox* (renderer: sdl.Renderer, font: ttf.Font, text: strin
 
 proc drawStringInBox* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float, width, height: float)=
   var ww = width * camera.zoom
-  var hh = height * camera.zoom
+#  var hh = height * camera.zoom
 
   var lines: seq[(string, int)] = @[]
   var build = ""

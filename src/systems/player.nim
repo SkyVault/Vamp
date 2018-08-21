@@ -42,8 +42,6 @@ EntityWorld.createSystem(
     let phys = self.get PhysicsBody
     let sprite = self.get Sprite
     let player = self.get Player
-    
-#     echo body.x, " ", body.y
 
     if isKeyDown(Key.LEFT):
       phys.velocity.x -= SPEED * GameClock.dt

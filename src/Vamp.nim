@@ -46,7 +46,7 @@ assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
 let map = loadTiledMap "assets/maps/map_1.tmx"
 
 makeEntity("Player", 400, 400)
-makeEntity("WiseOldWoman", 460, 300)
+# makeEntity("WiseOldWoman", 460, 300)
 makeEntity("Walker", 400 - 128, 400)
 makeEntity("Sword", 198, 0)
 
@@ -58,6 +58,7 @@ for group in map.objectGroups:
 SetTiledObjects(total)
 
 let img = assets.getImage("tiles")
+let bg = R2D.loadImage "assets/images/day_background_1.png"
 
 # Game loop
 while CurrentGameState() != Quiting:
@@ -86,9 +87,14 @@ while CurrentGameState() != Quiting:
     Quit()
 
   MainCamera.zoom = 4
+
+  let (ww, wh) = platform.windowSize()
+
+  R2D.drawUnprojected(bg, 0, 0, ww.float, wh.float)
   
+  R2D.drawTiledMapBg(map, img)
   EntityWorld.draw()
-  R2D.drawTiledMap(map, img)
+  R2D.drawTiledMapFg(map, img)
   Scenery.draw()
   dialog.draw()
 

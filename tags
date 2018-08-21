@@ -1562,6 +1562,8 @@ N_INLINE	src/nimcache/Vamp_body.c	/^static N_INLINE(void, nimFrame)(TFrame* s) {
 N_INLINE	src/nimcache/Vamp_body.c	/^static N_INLINE(void, popFrame)(void) {$/;"	f	file:
 N_INLINE	src/nimcache/Vamp_body.c	/^static N_INLINE(void, rtlAddZCT_MV4BBk6J1qu70IbBxwEn4w_2system)(tyObject_Cell_1zcF9cV8XIAtbN8h5HRUB8g* c) {$/;"	f	file:
 N_INLINE	src/nimcache/Vamp_dialog.c	/^static N_INLINE(NI, addInt)(NI a, NI b) {$/;"	f	file:
+N_INLINE	src/nimcache/Vamp_dialog.c	/^static N_INLINE(NI, modInt)(NI a, NI b) {$/;"	f	file:
+N_INLINE	src/nimcache/Vamp_dialog.c	/^static N_INLINE(NI, subInt)(NI a, NI b) {$/;"	f	file:
 N_INLINE	src/nimcache/Vamp_dialog.c	/^static N_INLINE(NIM_BOOL, isFilled_IxXD1UAPoEehVDW9cv9cRaew_2tables)(NI hcode) {$/;"	f	file:
 N_INLINE	src/nimcache/Vamp_dialog.c	/^static N_INLINE(tyObject_Cell_1zcF9cV8XIAtbN8h5HRUB8g*, usrToCell_yB9aH5WIlwd0xkYrcdPeXrQsystem)(void* usr) {$/;"	f	file:
 N_INLINE	src/nimcache/Vamp_dialog.c	/^static N_INLINE(tyObject_JsonNodeObj_df9bshXB7C9cTiWPIOtX3j1Q*, X5BX5D__bm6Lzuv1zmaV42IeMuikggjson)(tyObject_JsonNodeObj_df9bshXB7C9cTiWPIOtX3j1Q* node, NimStringDesc* name) {$/;"	f	file:
@@ -2400,11 +2402,11 @@ N_INLINE	src/nimcache/stdlib_xmltree.c	/^static N_INLINE(void, popFrame)(void) {
 N_INLINE	src/nimcache/stdlib_xmltree.c	/^static N_INLINE(void, rtlAddZCT_MV4BBk6J1qu70IbBxwEn4w_2system)(tyObject_Cell_1zcF9cV8XIAtbN8h5HRUB8g* c) {$/;"	f	file:
 N_INLINE	src/nimcache/stdlib_xmltree.c	/^static N_INLINE(void, tageq__sqzIUxe6N8aFHqmX6csYQAxmltree)(tyObject_XmlNodeObj_X79bE2j9a1V7tizbx9blALudQ* n, NimStringDesc* tag) {$/;"	f	file:
 N_INLINE	src/nimcache/stdlib_xmltree.c	/^static N_INLINE(void, texteq__UCmBNzoBpBKFh9ccEBG0VNQxmltree)(tyObject_XmlNodeObj_X79bE2j9a1V7tizbx9blALudQ* n, NimStringDesc* text) {$/;"	f	file:
-N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_18)(void) {$/;"	f	file:
-N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_24)(void) {$/;"	f	file:
-N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_25)(void) {$/;"	f	file:
+N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_20)(void) {$/;"	f	file:
 N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_26)(void) {$/;"	f	file:
-N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_30)(void) {$/;"	f	file:
+N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_27)(void) {$/;"	f	file:
+N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_28)(void) {$/;"	f	file:
+N_NIMCALL	src/nimcache/Vamp_Vamp.c	/^static N_NIMCALL(void, TM_KwT9cTOEiz1PFJheAzG530g_32)(void) {$/;"	f	file:
 N_NIMCALL	src/nimcache/Vamp_ai.c	/^N_LIB_PRIVATE N_NIMCALL(tyObject_AicolonObjectType__RJxl9cMNLONsKeW0PQ2Lplw*, newAi_fZLHV5UnFVactv9cpk3V9c1A)(tyProc_K9cz6lIC37KLRqKAWbGEw5w update) {$/;"	f
 N_NIMCALL	src/nimcache/Vamp_ai.c	/^N_LIB_PRIVATE N_NIMCALL(void, colonanonymous__K3q54uRGkwlReTXwp9bqlgQ)(tyObject_SystemcolonObjectType__C1E9bh9bKU7b9cbu4UqNf9c9aug* sys, tyObject_EntitycolonObjectType__ONR9bCi5EpL9aL6LOlcBCXMg* self) {$/;"	f
 N_NIMCALL	src/nimcache/Vamp_ai.c	/^N_LIB_PRIVATE N_NIMCALL(void, colonanonymous__K3q54uRGkwlReTXwp9bqlgQ_2)(tyObject_SystemcolonObjectType__C1E9bh9bKU7b9cbu4UqNf9c9aug* sys, tyObject_EntitycolonObjectType__ONR9bCi5EpL9aL6LOlcBCXMg* self) {$/;"	f
@@ -2463,9 +2465,9 @@ N_NIMCALL	src/nimcache/Vamp_body.c	/^N_LIB_PRIVATE N_NIMCALL(void, widtheq__JL9c
 N_NIMCALL	src/nimcache/Vamp_body.c	/^N_LIB_PRIVATE N_NIMCALL(void, xeq__JL9cASBNMWqbOPHJPftn04Q)(tyObject_BodycolonObjectType__bVSFGlnzahyKc1n3zhm8Zw* b, NF v) {$/;"	f
 N_NIMCALL	src/nimcache/Vamp_body.c	/^N_LIB_PRIVATE N_NIMCALL(void, yeq__JL9cASBNMWqbOPHJPftn04Q_2)(tyObject_BodycolonObjectType__bVSFGlnzahyKc1n3zhm8Zw* b, NF v) {$/;"	f
 N_NIMCALL	src/nimcache/Vamp_body.c	/^static N_NIMCALL(void, Marker_tyRef_eb9aEVDkbXLGOYYAHFoITyA)(void* p, NI op) {$/;"	f	file:
-N_NIMCALL	src/nimcache/Vamp_dialog.c	/^N_LIB_PRIVATE N_NIMCALL(void, draw_9aEL39auytmyXXtnxzvOZq8w)(void) {$/;"	f
+N_NIMCALL	src/nimcache/Vamp_dialog.c	/^N_LIB_PRIVATE N_NIMCALL(void, draw_9aEL39auytmyXXtnxzvOZq8w_2)(void) {$/;"	f
 N_NIMCALL	src/nimcache/Vamp_dialog.c	/^N_LIB_PRIVATE N_NIMCALL(void, showDialog_RwZonAoj6gxzk1l40zbIpA)(tyObject_JsonNodeObj_df9bshXB7C9cTiWPIOtX3j1Q* node, tyObject_V2colonObjectType__Vo0g9bSeUoigjR2c79cvAqAA* point) {$/;"	f
-N_NIMCALL	src/nimcache/Vamp_dialog.c	/^N_LIB_PRIVATE N_NIMCALL(void, update_vxoISA53tf49aSe02p9aCKrg)(void) {$/;"	f
+N_NIMCALL	src/nimcache/Vamp_dialog.c	/^N_LIB_PRIVATE N_NIMCALL(void, update_9aEL39auytmyXXtnxzvOZq8w)(void) {$/;"	f
 N_NIMCALL	src/nimcache/Vamp_dialog.c	/^static N_NIMCALL(void, Marker_tyRef_6Bo0TIOWYQfdC0C4anmxPA)(void* p, NI op) {$/;"	f	file:
 N_NIMCALL	src/nimcache/Vamp_dialog.c	/^static N_NIMCALL(void, Marker_tyRef_PR9amqUQf7vIcE64snMnnNQ)(void* p, NI op) {$/;"	f	file:
 N_NIMCALL	src/nimcache/Vamp_dialog.c	/^static N_NIMCALL(void, Marker_tySequence_r9ap3NId1WzwAMh0B3cGGrA)(void* p, NI op) {$/;"	f	file:
@@ -4993,8 +4995,8 @@ TM_QRMIF17UianeyX84XQcoPg_2	src/nimcache/sdl2_nim_sdl_gfx_primitives_font.c	/^NI
 TM_T8sPUeYymAg4VnmycaqyjQ_2	src/nimcache/sdl2_nim_sdl.c	/^static void* TM_T8sPUeYymAg4VnmycaqyjQ_2;$/;"	v	file:
 TM_bwe3ZMepBRq3vOaWzNW3og_10	src/nimcache/Vamp_enemies.c	/^} TM_bwe3ZMepBRq3vOaWzNW3og_10 = {{3, 3}, {((NimStringDesc*) &TM_bwe3ZMepBRq3vOaWzNW3og_7),$/;"	v	typeref:struct:__anon108
 TM_bwe3ZMepBRq3vOaWzNW3og_6	src/nimcache/Vamp_enemies.c	/^NIM_CONST tySequence_sM4lkSb7zS6F7OVMvW9cffQ* TM_bwe3ZMepBRq3vOaWzNW3og_6 = ((tySequence_sM4lkSb7zS6F7OVMvW9cffQ*)&TM_bwe3ZMepBRq3vOaWzNW3og_10);$/;"	v
-TM_eGOug9aZB88J4gHrWDMsRLQ_12	src/nimcache/Vamp_dialog.c	/^NIM_CONST tyTuple_FtZxsWeKlOo83uVL9c4OOmg TM_eGOug9aZB88J4gHrWDMsRLQ_12 = {((NI) 1),$/;"	v
-TM_eGOug9aZB88J4gHrWDMsRLQ_8	src/nimcache/Vamp_dialog.c	/^NIM_CONST tyTuple_0vYzovSm9aKYybyF8MRuBJQ TM_eGOug9aZB88J4gHrWDMsRLQ_8 = {0.0,$/;"	v
+TM_eGOug9aZB88J4gHrWDMsRLQ_14	src/nimcache/Vamp_dialog.c	/^NIM_CONST tyTuple_0vYzovSm9aKYybyF8MRuBJQ TM_eGOug9aZB88J4gHrWDMsRLQ_14 = {0.0,$/;"	v
+TM_eGOug9aZB88J4gHrWDMsRLQ_17	src/nimcache/Vamp_dialog.c	/^NIM_CONST tyTuple_FtZxsWeKlOo83uVL9c4OOmg TM_eGOug9aZB88J4gHrWDMsRLQ_17 = {((NI) 1),$/;"	v
 TM_g5o5WEqRGC1LPWvqxdE8Kg_2	src/nimcache/sdl2_nim_sdl_gfx_primitives.c	/^static void* TM_g5o5WEqRGC1LPWvqxdE8Kg_2;$/;"	v	file:
 TM_jvWQYw9bcuYhftfPX2ynPeg_41	src/nimcache/stdlib_ospaths.c	/^static NIM_CONST tySet_tyChar_nmiMWKVIe46vacnhAFrQvw TM_jvWQYw9bcuYhftfPX2ynPeg_41 = {$/;"	v	file:
 TM_jvWQYw9bcuYhftfPX2ynPeg_47	src/nimcache/stdlib_ospaths.c	/^static NIM_CONST tySet_tyChar_nmiMWKVIe46vacnhAFrQvw TM_jvWQYw9bcuYhftfPX2ynPeg_47 = {$/;"	v	file:
@@ -6680,7 +6682,9 @@ draw	src/systems/renderable.nim	/^  draw = proc(s: System, e: Entity)=$/;"	t
 drawString	src/art.nim	/^proc drawString* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float, scale=1.0)=$/;"	f
 drawStringInBox	src/art.nim	/^proc drawStringInBox* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float, width, height: float)=$/;"	f
 drawStringScaledToBox	src/art.nim	/^proc drawStringScaledToBox* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y, width, height: float)=$/;"	f
-drawTiledMap	src/art.nim	/^proc drawTiledMap* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=$/;"	f
+drawTiledMapBg	src/art.nim	/^proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=$/;"	f
+drawTiledMapFg	src/art.nim	/^proc drawTiledMapFg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=$/;"	f
+drawUnprojected	src/art.nim	/^proc drawUnprojected* (renderer: sdl.Renderer, obj: Image, x, y, w, h: float, rot = 0.0, flip = false, ox = -1, oy = -1): bool {.discardable.}=$/;"	f
 driver	src/nimcache/Vamp_art.c	/^void* driver;$/;"	m	struct:tyObject_FT_FaceRec_Bdl3bWUfZngY3GJHZTr9cvg	file:
 driver	src/nimcache/freetype_freetype.c	/^void* driver;$/;"	m	struct:tyObject_FT_FaceRec_Bdl3bWUfZngY3GJHZTr9cvg	file:
 driver	src/nimcache/freetype_freetype.c	/^void* driver;$/;"	m	struct:tyObject_FT_Open_Args_KeA2ZKgqvZG3KqhPfRY20A	file:
@@ -11185,6 +11189,7 @@ tyEnum_JsonNodeKind_RUngo7nCHe6O8aBGIcrhtg	src/nimcache/stdlib_json.c	/^typedef 
 tyEnum_JsonNodeKind_RUngo7nCHe6O8aBGIcrhtg	src/nimcache/stdlib_system.c	/^typedef NU8 tyEnum_JsonNodeKind_RUngo7nCHe6O8aBGIcrhtg;$/;"	t	file:
 tyEnum_JsonNodeKind_RUngo7nCHe6O8aBGIcrhtg	src/nimcache/stdlib_tables.c	/^typedef NU8 tyEnum_JsonNodeKind_RUngo7nCHe6O8aBGIcrhtg;$/;"	t	file:
 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg	src/nimcache/Vamp_Vamp.c	/^typedef NI32 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg;$/;"	t	file:
+tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg	src/nimcache/Vamp_dialog.c	/^typedef NI32 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg;$/;"	t	file:
 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg	src/nimcache/Vamp_input.c	/^typedef NI32 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg;$/;"	t	file:
 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg	src/nimcache/Vamp_platform.c	/^typedef NI32 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg;$/;"	t	file:
 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg	src/nimcache/Vamp_player.c	/^typedef NI32 tyEnum_Key_YuVeQd4NfazNaVeOWUyhWg;$/;"	t	file:
