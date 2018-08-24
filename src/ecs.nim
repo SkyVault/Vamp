@@ -95,6 +95,15 @@ proc getAllThatMatch* (matchlist: seq[string]): seq[Entity]=
           good = false
     if good: result.add(e)
 
+proc getFirstThatMatch* (matchlist: seq[string]): Entity=
+  result = nil
+  for e in world.entities:
+    var good = true
+    for m in matchList:
+        if not e.has(m):
+          good = false
+    if good: return e
+
 proc update* (world: World)=
     for system in world.systems:
       system.preUpdate(system)

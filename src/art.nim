@@ -253,7 +253,7 @@ proc lineRect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
     (current_color[3] * 255).uint8,
   )
 
-proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=
+proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0)=
   let tileset = map.tilesets[0]
 
   for layer in map.layers:
@@ -268,9 +268,9 @@ proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox,
           let quad = tileset.regions[gid - 1]
           var region = newRegion(quad.x.float, quad.y.float, quad.width.float, quad.height.float)
           
-          draw(renderer, texture, region, x.float * map.tilewidth.float, y.float * map.tileheight.float)
+          draw(renderer, texture, region, (x.float + ox.float) * map.tilewidth.float, (y.float + oy.float) * map.tileheight.float)
 
-proc drawTiledMapFg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0.0)=
+proc drawTiledMapFg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0)=
   let tileset = map.tilesets[0]
 
   for layer in map.layers:
@@ -285,7 +285,7 @@ proc drawTiledMapFg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox,
           let quad = tileset.regions[gid - 1]
           var region = newRegion(quad.x.float, quad.y.float, quad.width.float, quad.height.float)
           
-          draw(renderer, texture, region, x.float * map.tilewidth.float, y.float * map.tileheight.float)
+          draw(renderer, texture, region, (x.float + ox.float) * map.tilewidth.float, (y.float + oy.float) * map.tileheight.float)
 
 proc drawString* (renderer: sdl.Renderer, font: ttf.Font, text: string, x, y: float, scale=1.0)=
   # Render surface

@@ -18,7 +18,8 @@ import
   entity_assembler,
   json,
   os,
-  system
+  system,
+  world
 
 if platform.init((1280, 720), "DevWindow") == Failure:
   discard
@@ -45,7 +46,7 @@ assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
 
 let map = loadTiledMap "assets/maps/map_1.tmx"
 
-makeEntity("Player", 400, 400)
+makeEntity("Player", 0, 300)
 # makeEntity("WiseOldWoman", 460, 300)
 makeEntity("Walker", 400 - 128, 400)
 makeEntity("Sword", 198, 0)
@@ -57,8 +58,10 @@ for group in map.objectGroups:
 
 SetTiledObjects(total)
 
-let img = assets.getImage("tiles")
+# let img = assets.getImage("tiles")
 let bg = R2D.loadImage "assets/images/day_background_1.png"
+
+let gameWorld = newGameWorld()
 
 # Game loop
 while CurrentGameState() != Quiting:
@@ -72,14 +75,15 @@ while CurrentGameState() != Quiting:
     if e.kind == sdl.Quit: Quit()
     inputHandleEvent(e)
 
-  if GameClock.ticks mod 100 == 0:
-    echo GameClock.fps
+#  if GameClock.ticks mod 100 == 0:
+#    echo GameClock.fps
   
   platform.update()
 
   if CurrentGameState() != GameState.Paused:
     Scenery.update()
     EntityWorld.update()
+    gameWorld.update()
 
   dialog.update()
 
@@ -92,9 +96,11 @@ while CurrentGameState() != Quiting:
 
   R2D.drawUnprojected(bg, 0, 0, ww.float, wh.float)
   
-  R2D.drawTiledMapBg(map, img)
+#  R2D.drawTiledMapBg(map, img)
+  gameWorld.drawBg()
   EntityWorld.draw()
-  R2D.drawTiledMapFg(map, img)
+  gameWorld.drawFg()
+#  R2D.drawTiledMapFg(map, img)
   Scenery.draw()
   dialog.draw()
 
