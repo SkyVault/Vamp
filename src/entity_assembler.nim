@@ -1,6 +1,7 @@
 import 
     tables,
     ecs,
+    maths,
     body,
     items,
     platform,
@@ -11,9 +12,19 @@ import
 const Entities = {
     "Player": proc(x, y: float): Entity=
         result = EntityWorld.createEntity()
-        result.add(newBody(x, y, 10, 25))
+        result.add(newBody(x, y, 12, 27))
         result.add(newPhysicsBody())
-        result.add(newSprite(assets.getImage("player"), newRegion(0, 0, 10, 25)))
+
+        result.add(newAnimatedSprite(assets.getImage("player"), @[
+          newFrame(0, 0, 32, 32),
+          newFrame(32, 0, 32, 32),
+          newFrame(64, 0, 32, 32),
+          newFrame(96, 0, 32, 32),
+          newFrame(128, 0, 32, 32),
+          newFrame(160, 0, 32, 32),
+        ],
+        Vec2(-10, -4)))
+
         result.add(newPlayer()),
 
     "Walker": proc(x, y: float): Entity=

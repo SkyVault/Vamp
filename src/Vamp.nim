@@ -1,3 +1,4 @@
+# import nimprof
 import 
   sdl2/sdl,
   input,

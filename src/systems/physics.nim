@@ -161,7 +161,6 @@ EntityWorld.createSystem(
             else:
               phys.velocity.y = 0
               ybody.y = o.y + o.height
-
             
           else:
             if o.physicsType == PhysicsType.Oneway:
