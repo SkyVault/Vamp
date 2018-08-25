@@ -13,6 +13,7 @@ type
     Dynamic,
     Kill,
     Spawn,
+    Oneway,
     Sensor,
     Ladder
 
@@ -45,6 +46,8 @@ proc newPhysicsObject* (x, y, w, h: float, typeName: string): PhysicsObject=
     result.physicsType = PhysicsType.Spawn
   of "Kill":
     result.physicsType = PhysicsType.Kill
+  of "Oneway":
+    result.physicsType = PhysicsType.Oneway
   else: discard
 
 proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
@@ -150,11 +153,29 @@ EntityWorld.createSystem(
           phys.isOnGround = true
           phys.velocity.y = 0
           collided = true
-        of PhysicsType.Static, PhysicsType.Dynamic:
-          ybody.y = o.y - ybody.height
-          phys.isOnGround = true
-          phys.velocity.y = 0
-          collided = true
+        of PhysicsType.Static, PhysicsType.Dynamic, PhysicsType.Oneway:
+
+          if o.y + o.height / 2 < body.center.y:
+            if o.physicsType == PhysicsType.Oneway:
+              discard
+            else:
+              phys.velocity.y = 0
+              ybody.y = o.y + o.height
+
+            
+          else:
+            if o.physicsType == PhysicsType.Oneway:
+              if phys.velocity.y >= 0:
+                ybody.y = o.y - ybody.height
+                phys.isOnGround = true
+                phys.velocity.y = 0
+                collided = true
+            else:
+              ybody.y = o.y - ybody.height
+              phys.isOnGround = true
+              phys.velocity.y = 0
+              collided = true
+
         else: discard
       
       if collided:
@@ -179,7 +200,7 @@ EntityWorld.createSystem(
     if platform.Debugging == false: return
     for o in tiledObjects:
       case o.physicsType:
-      of PhysicsType.Static, PhysicsType.Dynamic:
+      of PhysicsType.Static, PhysicsType.Dynamic, PhysicsType.Oneway:
         R2d.setColor((1, 1, 1, 1))
       of PhysicsType.Ladder:
         R2d.setColor((1.0, 0.5, 1.0, 1.0))

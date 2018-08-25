@@ -23,6 +23,14 @@ proc newGameWorld* (): auto=
 proc update* (world: GameWorld)=
   let player = getFirstThatMatch(@["Player"])
   if player == nil: return
+
+  if world.chunks.len == 0: return
+  let map = world.chunks[0]
+  let (ww, wh) = windowSize()
+
+  if MainCamera.x < 0: MainCamera.x = 0
+  if (MainCamera.x + ww.float) / MainCamera.zoom > map.width.float * map.tilewidth.float:
+    MainCamera.x = map.width.float * map.tilewidth.float - (ww.float / MainCamera.zoom);
   
 proc drawFg* (world: GameWorld)=
   for chunk in world.chunks:

@@ -41,12 +41,10 @@ assets.addImage(R2D.loadImage "assets/images/items.png", "items")
 
 # Load json datae
 assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
-#for file in walkFiles("./assets/dialog"):
-  #echo file
 
 let map = loadTiledMap "assets/maps/map_1.tmx"
 
-makeEntity("Player", 0, 300)
+makeEntity("Player", 200, 300)
 # makeEntity("WiseOldWoman", 460, 300)
 makeEntity("Walker", 400 - 128, 400)
 makeEntity("Sword", 198, 0)
@@ -58,7 +56,6 @@ for group in map.objectGroups:
 
 SetTiledObjects(total)
 
-# let img = assets.getImage("tiles")
 let bg = R2D.loadImage "assets/images/day_background_1.png"
 
 let gameWorld = newGameWorld()
@@ -96,11 +93,9 @@ while CurrentGameState() != Quiting:
 
   R2D.drawUnprojected(bg, 0, 0, ww.float, wh.float)
   
-#  R2D.drawTiledMapBg(map, img)
   gameWorld.drawBg()
   EntityWorld.draw()
   gameWorld.drawFg()
-#  R2D.drawTiledMapFg(map, img)
   Scenery.draw()
   dialog.draw()
 
