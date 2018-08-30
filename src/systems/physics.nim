@@ -15,7 +15,8 @@ type
     Spawn,
     Oneway,
     Sensor,
-    Ladder
+    Ladder,
+    Water
 
   PhysicsObject* = ref object of Body
     physicsType*: PhysicsType
@@ -48,6 +49,8 @@ proc newPhysicsObject* (x, y, w, h: float, typeName: string): PhysicsObject=
     result.physicsType = PhysicsType.Kill
   of "Oneway":
     result.physicsType = PhysicsType.Oneway
+  of "Water":
+    result.physicsType = PhysicsType.Water
   else: discard
 
 proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
@@ -209,6 +212,8 @@ EntityWorld.createSystem(
         R2d.setColor((1.0, 0.2, 0.0, 1.0))
       of PhysicsType.Sensor:
         R2d.setColor((0.0, 0.2, 1.0, 1.0))
+      of PhysicsType.Water:
+        R2d.setColor (0.0, 0.0, 1.0, 1.0)
 
       R2D.lineRect(o.x, o.y, o.width, o.height)
   )

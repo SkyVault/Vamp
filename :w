@@ -11,9 +11,6 @@ type
     offset*: V2
     rotation*: float
 
-  Custom* = ref object of Drawable
-    draw*: proc(self: Entity)
-
   RectangleComponent* = ref object of Drawable
 
   Frame* = ref object of Region
@@ -31,9 +28,6 @@ type
       timer: float
     of false:
       region* : Region
-
-proc newCustom* (draw: proc(self: Entity)): auto=
-  result = Custom(draw: draw)
 
 proc newFrame* (x, y, w, h: int, time=0.16, offset=Vec2(0,0)): auto=
   result = Frame(
@@ -77,15 +71,6 @@ proc frame(s: Sprite): Frame{.inline.}=
     result = s.frames[s.currentFrame]
   else:
     result = nil
-
-EntityWorld.createSystem(
-  @["Body", "Custom"],
-  load = proc(sys: System, self: Entity)=
-    discard
-  ,
-  draw = proc(s: System, e: Entity)=
-    e.get(Custom).draw(e)
-  )
 
 #(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
 EntityWorld.createSystem(

@@ -39,13 +39,14 @@ assets.addImage(R2D.loadImage "assets/images/player.png", "player")
 assets.addImage(R2D.loadImage "assets/images/tilesheet.png", "tiles")
 assets.addImage(R2D.loadImage "assets/images/walker_enemy.png", "walker_enemy")
 assets.addImage(R2D.loadImage "assets/images/items.png", "items")
+assets.addImage(R2D.loadImage "assets/images/Entities.png", "entities")
 
 # Load json datae
 assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
 
 let map = loadTiledMap "assets/maps/map_1.tmx"
 
-makeEntity("Player", 200, 300)
+makeEntity("Player", 200, 400)
 # makeEntity("WiseOldWoman", 460, 300)
 makeEntity("Walker", 400 - 128, 400)
 makeEntity("Sword", 198, 0)
@@ -55,6 +56,7 @@ for group in map.objectGroups:
   for o in group.objects:
     total.add(o)
 
+makeEntitiesFromTiled(total)
 SetTiledObjects(total)
 
 let bg = R2D.loadImage "assets/images/day_background_1.png"
