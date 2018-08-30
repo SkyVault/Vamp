@@ -2,6 +2,7 @@ import
     tables,
     ecs,
     maths,
+    math,
     body,
     items,
     platform,
@@ -60,25 +61,30 @@ proc makeWater* (x, y, w, h: float): auto {.discardable.}=
   result = EntityWorld.createEntity()
   result.add(newBody(x, y, w, h))
 
+  var offset = 0.0
+
   result.add(newCustom(
     proc(self: Entity)=
       let body = self.get(Body)
       let image = assets.getImage "entities"
 
+#      offset = math.sin(GameClock.timer * 2.0) * 2.0
+
       let num = (body.width.int div 16)
       let reg = newRegion(0, 496, 16, 16)
 
       for i in 0..num:
+        let offset2 = math.cos(i.float + GameClock.timer) * 1.2
         R2D.draw(
           image,
           reg,
           (body.x.int + (i * 16)).float,
-          body.y,
+          body.y + offset - offset2,
           0.0,
           false)
 
       R2D.setColor (99.0 / 255.0, 155.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)
-      R2D.rect(body.x, body.y + 16, body.width, body.height - 16)
+      R2D.rect(body.x, body.y + 8 + offset, body.width, body.height - 16)
   ))
 
 proc makeEntity* (which: string, x, y: float, w, h = 0.0): auto {.discardable.}=
