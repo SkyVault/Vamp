@@ -20,6 +20,8 @@ type
 
     roomStack: seq[TiledMap]
 
+proc movePlayerToDoor* (world: GameWorld)
+
 proc pushRoom* (world: GameWorld, path: string, movePlayer = true)=
   let map = loadTiledMap(path)
   world.roomStack.add(map)
@@ -35,19 +37,23 @@ proc pushRoom* (world: GameWorld, path: string, movePlayer = true)=
 
   if not movePlayer: return
 
-  let player = getFirstThatMatch(@["Player"])
-  if player == nil: return
+  world.movePlayerToDoor()
 
+proc popRoom* (world: GameWorld)=
+  # Destroy entities that arent persistant
+
+  discard world.roomStack.pop()
+
+proc movePlayerToDoor* (world: GameWorld)=
+  let player = getFirstThatMatch(@["Player"])
   let doors = getAllThatMatch(@["Door"])
   for door in doors:
     if door.get(Door).id == world.doorId:
       var body = player.get(Body)
       body.position = door.get(Body).position - Vec2(0, body.height) * 1
 
-proc popRoom* (world: GameWorld)=
-  # Destroy entities that arent persistant
-
-  discard world.roomStack.pop()
+      let (ww, wh) = platform.windowSize()
+      MainCamera().position = body.center - Vec2((ww.float / 2.0), (wh.float / 2.0))
 
 proc newGameWorld* (): auto=
   result = GameWorld(
@@ -85,6 +91,7 @@ proc update* (world: GameWorld)=
     if doorC.popTheRoom:
       killAll()
       world.popRoom()
+
       world.doorId = doorC.id
 
       let map = world.roomStack[world.roomStack.len - 1]
@@ -96,11 +103,7 @@ proc update* (world: GameWorld)=
       makeEntitiesFromTiled(total)
       SetTiledObjects(total)
 
-      let doors = getAllThatMatch(@["Door"])
-      for door in doors:
-        if door.get(Door).id == world.doorId:
-          var body = player.get(Body)
-          body.position = door.get(Body).position - Vec2(0, body.height) * 1
+      world.movePlayerToDoor()
 
       doorC.popTheRoom = false
 
