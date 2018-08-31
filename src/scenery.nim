@@ -9,16 +9,14 @@ type
     DeleteScene
 
   Scene* = ref object of RootObj
-    event: proc(ev: SceneState)
 
   SceneManager = ref object
     scene_stack: seq[Scene]
 
+method event* (scene: Scene, ev: SceneState) {.base.} = discard
+
 var sce = SceneManager(scene_stack: newSeq[Scene]())
 template Scenery* (): auto = sce
-
-proc newScene* (ev: proc(ev: SceneState)): Scene=
-  result = Scene(event: ev)
 
 proc push* (sc: SceneManager, scene: Scene): Scene {.discardable.}=
   result = scene

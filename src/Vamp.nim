@@ -20,7 +20,8 @@ import
   json,
   os,
   system,
-  world
+  world,
+  scenes/[menu, game]
 
 if platform.init((1280, 720), "DevWindow") == Failure:
   discard
@@ -44,10 +45,9 @@ assets.addImage(R2D.loadImage "assets/images/Entities.png", "entities")
 # Load json datae
 assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
 
-makeEntity("Player", 200, 400)
-
-let bg = R2D.loadImage "assets/images/day_background_1.png"
+#let bg = R2D.loadImage "assets/images/day_background_1.png"
 let gameWorld = newGameWorld()
+Scenery.goto(MenuScene(gameWorld: gameWorld))
 
 # Game loop
 while CurrentGameState() != Quiting:
@@ -78,14 +78,10 @@ while CurrentGameState() != Quiting:
 
   MainCamera.zoom = 4
 
-  let (ww, wh) = platform.windowSize()
-
-  R2D.drawUnprojected(bg, 0, 0, ww.float, wh.float)
-  
+  Scenery.draw()
   gameWorld.drawBg()
   EntityWorld.draw()
   gameWorld.drawFg()
-  Scenery.draw()
   dialog.draw()
 
   R2D.renderPresent()

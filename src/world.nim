@@ -62,8 +62,6 @@ proc newGameWorld* (): auto=
     doorId: "",
     tileSheet: assets.getImage("tiles"))
 
-  result.pushRoom("assets/maps/map_1.tmx", false);
-
 proc update* (world: GameWorld)=
   let player = getFirstThatMatch(@["Player"])
   if player != nil:

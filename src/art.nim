@@ -65,6 +65,19 @@ var
     zoom: 1, rotation: 0
   )
 
+template unProject* (camera: Camera, body: untyped)=
+  let zoom = camera.zoom
+  let x = camera.position.x
+  let y = camera.position.y
+
+  camera.zoom = 1
+  camera.position.x = 0
+  camera.position.y = 0
+  body
+  camera.zoom = zoom
+  camera.position.x = x
+  camera.position.y = y
+
 template MainCamera* (): Camera= camera
 
 proc sdlRect(r: Region): sdl.Rect=
