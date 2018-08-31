@@ -57,7 +57,7 @@ EntityWorld.createSystem(
     if phys.isOnLadder and isKeyDown(Key.UP):
       phys.velocity.y -= SPEED * GameClock.dt * 15
 
-    if isKeyDown(Key.z) and phys.isOnGround:
+    if isKeyDown(Key.z) and phys.isOnGround and not phys.isOnLadder:
       phys.velocity.y -= 300.0
 
     var camera = MainCamera()

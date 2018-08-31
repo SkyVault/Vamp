@@ -257,7 +257,9 @@ proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox,
   let tileset = map.tilesets[0]
 
   for layer in map.layers:
+    # SDL_SetTextureColorMod(pTexture, 64, 64, 64);
     if layer.properties.hasKey "fg": continue
+
     var tiles = layer.tiles
     for y in 0..<layer.height:
       for x in 0..<layer.width:
