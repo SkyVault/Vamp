@@ -9,6 +9,7 @@ type
 
     Entity* = ref object
         loaded, remove: bool
+        persistant: bool
         components: Table[string, Component]
 
     System* = ref object
@@ -20,6 +21,7 @@ type
         update:     proc(s: System, e: Entity)
         draw:       proc(s: System, e: Entity)
         destroy:    proc(s: System, e: Entity)
+        destroySelf:proc(s: System)
         preDraw:    proc(s: System)
 
     World* = ref object
@@ -34,6 +36,7 @@ proc default_preUpdate    (s: System)            = discard
 proc default_update       (s: System, e: Entity) = discard
 proc default_render       (s: System, e: Entity) = discard
 proc default_destroy      (s: System, e: Entity) = discard
+proc default_destroySelf  (s: System)            = discard
 proc default_preDraw      (s: System)            = discard
 
 proc add* [T](self: Entity, component: T): T {.discardable.} =
@@ -56,7 +59,8 @@ proc newSystem(
     update:     proc(s: System, e: Entity),
     draw:       proc(s: System, e: Entity),
     destroy:    proc(s: System, e: Entity),
-    preDraw:    proc(s: System)
+    preDraw:    proc(s: System),
+    destroySelf: proc(s: System)
     ): System=
 
     var match = newSeq[string]()
@@ -70,6 +74,7 @@ proc newSystem(
         update: update,
         draw: draw,
         destroy: destroy,
+        destroySelf: destroySelf,
         preDraw: preDraw
     )
 
@@ -85,6 +90,21 @@ proc newWorld* (): World=
 
 var world = newWorld()
 template EntityWorld* (): auto = world
+
+proc killAll* (killPersistant = false)=
+  let num = world.entities.len
+  for i in countdown(num - 1, 0):
+      let entity = world.entities[i]
+
+      if entity.persistant and not killPersistant:
+        continue
+
+      for system in world.systems:
+          if system.matches entity:
+            system.destroy(system, entity)
+          system.destroySelf(system)
+
+      world.entities.delete(i)
 
 proc getAllThatMatch* (matchlist: seq[string]): seq[Entity]=
   result = newSeq[Entity]()
@@ -135,11 +155,12 @@ proc draw* (world: World)=
             if system.matches entity:
                 system.draw(system, entity)
 
-proc createEntity* (world: World): auto {.discardable.}=
+proc createEntity* (world: World, persistant = false): auto {.discardable.}=
     result = Entity(
         components: initTable[string, Component](),
         loaded: false,
-        remove: false
+        remove: false,
+        persistant: persistant
     )
 
     world.entities.add result
@@ -152,7 +173,8 @@ proc createSystem* (
     update: proc(s: System, e: Entity) = default_update,
     draw: proc(s: System, e: Entity) = default_render,
     destroy: proc(s: System, e: Entity) = default_destroy,
-    preDraw: proc(s: System) = default_preDraw
+    preDraw: proc(s: System) = default_preDraw,
+    destroySelf: proc(s: System) = default_destroySelf
     ): System {.discardable.}=
 
     result = newSystem(
@@ -162,7 +184,8 @@ proc createSystem* (
         update,
         draw,
         destroy,
-        preDraw
+        preDraw,
+        destroySelf
     )
 
     result.worldRef = world

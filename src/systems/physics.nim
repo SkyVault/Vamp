@@ -16,7 +16,8 @@ type
     Oneway,
     Sensor,
     Ladder,
-    Water
+    Water,
+    Door
 
   PhysicsObject* = ref object of Body
     physicsType*: PhysicsType
@@ -28,6 +29,7 @@ type
     isOnLadder*: bool
     gravity_scale*: float
     physicsType*: PhysicsType
+    passThrough*: bool
     collisions*: seq[Entity]
     solidsCollisionCallback*: proc(solid: PhysicsObject)
 
@@ -51,6 +53,8 @@ proc newPhysicsObject* (x, y, w, h: float, typeName: string): PhysicsObject=
     result.physicsType = PhysicsType.Oneway
   of "Water":
     result.physicsType = PhysicsType.Water
+  of "Door":
+    result.physicsType = PhysicsType.Door
   else: discard
 
 proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
@@ -61,6 +65,7 @@ proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
     isOnGround: false,
     isOnLadder: false,
     physicsType: PhysicsType.Dynamic,
+    passThrough: false,
     collisions: newSeq[Entity](),
     solidsCollisionCallback: proc(solid: PhysicsObject)= discard
   )
@@ -69,17 +74,6 @@ var tiledObjects    = newSeq[PhysicsObject]()
 var physicsEntities = newSeq[Entity]()
 
 proc SetTiledObjects* (objs: seq[TiledObject])=
-  discard """
-TiledPolygon = ref object of TiledObject
-  points: seq[(float, float)]
-
-TiledPolyline = ref object of TiledObject
-  points: seq[(float, float)]
-
-TiledPoint = ref object of TiledObject
-
-TiledEllipse = ref object of TiledObject
-  """
   for o in objs:
     if o of TiledPolygon or
        o of TiledPoint or
@@ -117,6 +111,11 @@ EntityWorld.createSystem(
     R2D.setColor((1.0, 1.0, 1.0, 1.0))
   ,
 
+  destroySelf = proc(sys: System)=
+    tiledObjects.setLen(0)
+    physicsEntities.setLen(0)
+  ,
+
   preUpdate = proc(sys: System)=
     physicsEntities = getAllThatMatch(@["PhysicsBody"])
   ,
@@ -149,7 +148,7 @@ EntityWorld.createSystem(
       
       if o.contains(ybody):
         case o.physicsType:
-        of PhysicsType.Kill, PhysicsType.Spawn:
+        of PhysicsType.Kill, PhysicsType.Spawn, PhysicsType.Door:
           collided = true
         of PhysicsType.Ladder:
           phys.isOnLadder = true
@@ -186,6 +185,8 @@ EntityWorld.createSystem(
     phys.collisions.setLen(0)
     for e in physicsEntities:
       if e == self: continue
+      if e.get(PhysicsBody).passThrough: continue
+
       let ebod = e.get Body
       if ebod.contains(body):
         phys.collisions.add(e)
@@ -196,7 +197,6 @@ EntityWorld.createSystem(
 
     for o in colliders:
       phys.solidsCollisionCallback(o)
-
   ,
   preDraw = proc(s: System)=
     if platform.Debugging == false: return
@@ -214,6 +214,8 @@ EntityWorld.createSystem(
         R2d.setColor((0.0, 0.2, 1.0, 1.0))
       of PhysicsType.Water:
         R2d.setColor (0.0, 0.0, 1.0, 1.0)
+      of PhysicsType.Door:
+        R2d.setColor (1.0, 0.4, 0.1, 1.0)
 
       R2D.lineRect(o.x, o.y, o.width, o.height)
   )

@@ -8,13 +8,14 @@ import
     platform,
     nim_tiled,
     strformat,
+    entity/[door],
     systems/[physics, ai, renderable, enemies, player],
     assets,
     art
 
 const Entities = {
     "Player": proc(x, y: float, w, h = 0.0): Entity=
-        result = EntityWorld.createEntity()
+        result = EntityWorld.createEntity(true)
         result.add(newBody(x, y, 12, 27))
         result.add(newPhysicsBody())
 
@@ -87,6 +88,32 @@ proc makeWater* (x, y, w, h: float): auto {.discardable.}=
       R2D.rect(body.x, body.y + 8 + offset, body.width, body.height - 16)
   ))
 
+proc makeDoor* (x, y, w, h: float, obj: TiledObject): auto {.discardable.}=
+  var toPath = ""
+  var id = ""
+
+  if obj.properties.hasKey "push":
+    toPath = obj.properties["push"].valueString
+
+  if obj.properties.hasKey "pop":
+    toPath = "-1"
+
+  if obj.properties.hasKey "id":
+    id = obj.properties["id"].valueString
+  else:
+    echo "Door is missing id..."
+
+  result = EntityWorld.createEntity()
+  result.add(newBody(x, y, w, h))
+  result.add(Door(
+    toPath: toPath,
+    id: id,
+    pushTheRoom: false,
+    popTheRoom: false
+  ))
+  result.add(newPhysicsBody())
+  result.get(PhysicsBody).passThrough = true
+
 proc makeEntity* (which: string, x, y: float, w, h = 0.0): auto {.discardable.}=
     if not Entities.hasKey which:
         echo "Entity: " & which & " does not exist!"
@@ -102,6 +129,7 @@ proc makeEntitiesFromTiled* (total: seq[TiledObject])=
     else:
       case entity.objectType:
       of "Water": makeWater(entity.x, entity.y, entity.width, entity.height)
+      of "Door": makeDoor(entity.x, entity.y, entity.width, entity.height, entity)
       of "", "Kill", "Spawn", "Ladder": discard
       else:
         echo fmt"Unknown entity type {entity.objectType}"
