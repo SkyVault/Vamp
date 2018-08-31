@@ -55,7 +55,8 @@ proc newPhysicsObject* (x, y, w, h: float, typeName: string): PhysicsObject=
     result.physicsType = PhysicsType.Water
   of "Door":
     result.physicsType = PhysicsType.Door
-  else: discard
+  of "": discard
+  else: result = nil
 
 proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
   result = PhysicsBody(
@@ -73,7 +74,7 @@ proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
 var tiledObjects    = newSeq[PhysicsObject]()
 var physicsEntities = newSeq[Entity]()
 
-proc SetTiledObjects* (objs: seq[TiledObject])=
+proc setTiledObjects* (objs: seq[TiledObject])=
   for o in objs:
     if o of TiledPolygon or
        o of TiledPoint or
@@ -81,10 +82,12 @@ proc SetTiledObjects* (objs: seq[TiledObject])=
        o of TiledPolyline:
       continue
 
-    tiledObjects.add(newPhysicsObject(
+    var to = newPhysicsObject(
       o.x, o.y, o.width, o.height,
       o.objectType
-    ))
+    )
+    if to == nil: continue
+    tiledObjects.add(to)
 
 proc placeMeeting* (point: V2): PhysicsObject=
   result = nil

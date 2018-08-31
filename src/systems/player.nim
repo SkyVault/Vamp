@@ -80,4 +80,9 @@ EntityWorld.createSystem(
       if other.has Item:
         player.invatory.add(other)
         other.kill()
+  ,
+
+  draw = proc(s: System, self: Entity)=
+    discard
+  ,
   )

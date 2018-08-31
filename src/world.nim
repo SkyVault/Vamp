@@ -33,7 +33,7 @@ proc pushRoom* (world: GameWorld, path: string, movePlayer = true)=
       total.add(o)
 
   makeEntitiesFromTiled(total)
-  SetTiledObjects(total)
+  setTiledObjects(total)
 
   if not movePlayer: return
 
@@ -101,7 +101,7 @@ proc update* (world: GameWorld)=
           total.add(o)
 
       makeEntitiesFromTiled(total)
-      SetTiledObjects(total)
+      setTiledObjects(total)
 
       world.movePlayerToDoor()
 

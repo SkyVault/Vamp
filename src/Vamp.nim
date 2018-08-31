@@ -44,20 +44,9 @@ assets.addImage(R2D.loadImage "assets/images/Entities.png", "entities")
 # Load json datae
 assets.addJson(parseFile("assets/dialog/sample.json"), "sample")
 
-
 makeEntity("Player", 200, 400)
 
-# let map = loadTiledMap "assets/maps/map_1.tmx"
-# var total = newSeq[TiledObject]()
-# for group in map.objectGroups:
-#   for o in group.objects:
-#     total.add(o)
-# 
-# makeEntitiesFromTiled(total)
-# SetTiledObjects(total)
-
 let bg = R2D.loadImage "assets/images/day_background_1.png"
-
 let gameWorld = newGameWorld()
 
 # Game loop
@@ -72,8 +61,8 @@ while CurrentGameState() != Quiting:
     if e.kind == sdl.Quit: Quit()
     inputHandleEvent(e)
 
-#  if GameClock.ticks mod 100 == 0:
-#    echo GameClock.fps
+  # if GameClock.ticks mod 100 == 0:
+  #   echo GameClock.fps
   
   platform.update()
 
