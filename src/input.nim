@@ -320,8 +320,8 @@ proc newKeyState(state = 0, last = 0): KeyState=
 #     return 
 #         joystickPresent(which.cint) == 1
 
-proc pullControllerInfo(input: InputManager)=
-    discard
+#proc pullControllerInfo(input: InputManager)=
+#    discard
 
 # proc IsButtonDown( )
 
@@ -407,6 +407,14 @@ proc isKeyPressed* (key: Key): bool=
         result =
             state.state == 1 and 
             state.last == 0
+
+proc resetKey* (key: Key)=
+    var ckey = getKeyInRange(key.cint)
+    if not input.keyMap.contains ckey: return
+    else:
+        var state = input.keyMap[ckey]
+        state.state = 0
+        state.last = 0
 
 proc inputUpdate* ()=
   for key, state in input.keyMap.mpairs:

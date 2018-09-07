@@ -43,7 +43,7 @@ const Entities = {
         result.add(newBody(x, y, 22, 5))
         result.add(newPhysicsBody())
         result.add(newSprite(assets.getImage("items"), newRegion(0, 0, 22, 5)))
-        result.add(Item()),
+        result.add(Item(itemType: ItemType.Weapon)),
 
     "WiseOldWoman": proc(x, y: float, w, h = 0.0): Entity=
         var img = R2D.loadImage("assets/images/old_lady.png")
@@ -51,7 +51,9 @@ const Entities = {
         result.add(newBody(x, y, 18, 27))
         result.add(newPhysicsBody())
         result.add(newSprite(img, newRegion(8, 5, 18, 27)))
-        result.add(newAi(oldLadyAi))
+        result.add(newAi(WiseOldWoman(
+          showingActionBox: false 
+        ), oldLadyAiUpdate, oldLadyAiDraw))
 
         var sprite = result.get Sprite
         sprite.color = (1.0, 0.0, 0.0, 1.0)
@@ -75,7 +77,7 @@ proc makeWater* (x, y, w, h: float): auto {.discardable.}=
       let reg = newRegion(0, 496, 16, 16)
 
       for i in 0..num:
-        let offset2 = math.cos(i.float + GameClock.timer) * 1.2
+        let offset2 = (math.cos(i.float + GameClock.timer) * 2.2)
         R2D.draw(
           image,
           reg,

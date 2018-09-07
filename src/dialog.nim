@@ -27,6 +27,7 @@ template DialogBoxHandler* = dialogBox
 
 proc showDialog* (node: JsonNode, point: V2)=
   platform.Pause()
+  resetKey(Key.Space)
 
   var index = "-1"
   for k, v in node.pairs:
@@ -58,6 +59,10 @@ proc update* =
     dialogBox.optionIndex = dialogBox.optionIndex mod numOptions
     if dialogBox.optionIndex < 0:
       dialogBox.optionIndex = numOptions - 1
+
+  if isKeyPressed(Key.Space):
+    platform.Resume()
+    discard dialogBox.dialogs.pop()
 
 proc draw* =
   if len(dialogBox.dialogs) == 0:

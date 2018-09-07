@@ -76,7 +76,7 @@ while CurrentGameState() != Quiting:
   if isKeyPressed(Key.ESCAPE):
     Quit()
 
-  MainCamera.zoom = 4
+  MainCamera.zoom = 3
 
   Scenery.draw()
   gameWorld.drawBg()

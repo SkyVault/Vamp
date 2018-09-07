@@ -11,9 +11,15 @@ import
   systems/physics
 
 type
-  Item* = ref object of Component
+  ItemType* = enum
+    Weapon,
+    Food
 
-var ItemSystem = EntityWorld.createSystem(
+type
+  Item* = ref object of Component
+    itemType* : ItemType
+
+EntityWorld.createSystem(
   @["Item", "Sprite", "Body"],
   load = proc(sys: System, self: Entity)=
     discard

@@ -17,6 +17,7 @@ method event* (self: GameScene, state: SceneState)=
 
     self.bg = R2D.loadImage "assets/images/day_background_1.png"
     makeEntity("Player", 200, 400)
+    makeEntity("Sword", 120, 400)
     self.gameWorld.pushRoom("assets/maps/map_1.tmx", false);
 
   of UpdateScene:

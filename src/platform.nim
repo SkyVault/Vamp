@@ -41,6 +41,9 @@ proc CurrentGameState* (): auto = current_gamestate
 proc Pause* ()=
   current_gamestate = Paused
 
+proc Resume* ()=
+  current_gamestate = Running
+
 proc Quit* ()=
   current_gamestate = Quiting
 

@@ -27,6 +27,8 @@ type
     friction*: float
     isOnGround*: bool
     isOnLadder*: bool
+    isInWater*: bool
+    waterSign: float
     gravity_scale*: float
     physicsType*: PhysicsType
     passThrough*: bool
@@ -65,6 +67,8 @@ proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
     gravity_scale: 1.0,
     isOnGround: false,
     isOnLadder: false,
+    isInWater: false,
+    waterSign: 0.0,
     physicsType: PhysicsType.Dynamic,
     passThrough: false,
     collisions: newSeq[Entity](),
@@ -132,14 +136,18 @@ EntityWorld.createSystem(
     scaled_y_gravity *= (if phys.velocity.y > 0: 3.0 else: 1.0)
     scaled_x_friction *= (if not phys.isOnGround: 3.0 else: 1.0)
 
-    if not phys.isOnLadder:
+    if not phys.isOnLadder and not phys.isInWater:
       phys.velocity.y += scaled_y_gravity * GameClock.dt
      
     var xbody = newBody(body.x + phys.velocity.x * GameClock.dt, body.y, body.width, body.height)
     var ybody = newBody(body.x, body.y + phys.velocity.y * GameClock.dt, body.width, body.height)
 
+    if phys.isInWater:
+      discard
+
     phys.isOnGround = false
     phys.isOnLadder = false
+    phys.isInWater  = false
 
     var colliders = newSeq[PhysicsObject]()
 
@@ -153,11 +161,16 @@ EntityWorld.createSystem(
         case o.physicsType:
         of PhysicsType.Kill, PhysicsType.Spawn, PhysicsType.Door:
           collided = true
+        
+        of PhysicsType.Water:
+          phys.isInWater = true
+
         of PhysicsType.Ladder:
           phys.isOnLadder = true
           phys.isOnGround = true
           phys.velocity.y = 0
           collided = true
+
         of PhysicsType.Static, PhysicsType.Dynamic, PhysicsType.Oneway:
 
           if o.y + o.height / 2 < body.center.y:
@@ -194,7 +207,9 @@ EntityWorld.createSystem(
       if ebod.contains(body):
         phys.collisions.add(e)
 
+    var pre_y_vel = phys.velocity.y
     phys.velocity *= math.pow(scaled_x_friction, GameClock.dt)
+    phys.velocity.y = pre_y_vel
 
     body.position = Vec2(xbody.x, ybody.y)
 

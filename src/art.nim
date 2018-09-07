@@ -266,6 +266,22 @@ proc lineRect*(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
     (current_color[3] * 255).uint8,
   )
 
+proc line* (renderer: sdl.Renderer, x1, y1, x2, y2: float, thickness=4.0)=
+  let xx1 = (x1 - camera.position.x) * camera.zoom
+  let yy1 = (y1 - camera.position.x) * camera.zoom
+  let xx2 = (x2 - camera.position.x) * camera.zoom
+  let yy2 = (y2 - camera.position.x) * camera.zoom
+  
+  discard renderer.thickLineRGBA(
+    xx1.int16, yy1.int16,
+    xx2.int16, yy2.int16,
+    thickness.uint8,
+    (current_color[0] * 255).uint8,
+    (current_color[1] * 255).uint8,
+    (current_color[2] * 255).uint8,
+    (current_color[3] * 255).uint8
+  )
+
 proc drawTiledMapBg* (renderer: sdl.Renderer, map: TiledMap, texture: Image, ox, oy = 0)=
   let tileset = map.tilesets[0]
 

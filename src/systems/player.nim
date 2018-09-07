@@ -11,14 +11,16 @@ import
 type
   Player* = ref object of Component
     invatory*: seq[Entity]
+    weapon*: Entity
     respawn: V2
 
 proc newPlayer* (): Player=
   result = Player(
-    invatory: newSeq[Entity]()
+    invatory: newSeq[Entity](),
+    weapon: nil
   )
 
-const SPEED = 300.0
+const SPEED = 350.0
 
 #(renderer: sdl.Renderer, x, y, w, h: float, rot=0.0)=
 EntityWorld.createSystem(
@@ -58,7 +60,7 @@ EntityWorld.createSystem(
       phys.velocity.y -= SPEED * GameClock.dt * 15
 
     if isKeyDown(Key.z) and phys.isOnGround and not phys.isOnLadder:
-      phys.velocity.y -= 300.0
+      phys.velocity.y -= 200.0
 
     var camera = MainCamera()
 
@@ -78,6 +80,9 @@ EntityWorld.createSystem(
     # Handle collisions with other entities
     for other in phys.collisions:
       if other.has Item:
+        if other.get(Item).itemType == Weapon:
+          player.weapon = other
+
         player.invatory.add(other)
         other.kill()
   ,
