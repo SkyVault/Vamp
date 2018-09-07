@@ -4,7 +4,8 @@ import
   ../platform,
   ../art,
   ../world,
-  ../entity_assembler
+  ../entity_assembler,
+  strformat
 
 type
   GameScene* = ref object of Scene
@@ -18,7 +19,7 @@ method event* (self: GameScene, state: SceneState)=
     self.bg = R2D.loadImage "assets/images/day_background_1.png"
     makeEntity("Player", 200, 400)
     makeEntity("Sword", 120, 400)
-    self.gameWorld.pushRoom("assets/maps/map_1.tmx", false);
+    self.gameWorld.pushRoom(&"assets/maps/{self.gameWorld.currentWorld()}/map_1.tmx", false);
 
   of UpdateScene:
     discard

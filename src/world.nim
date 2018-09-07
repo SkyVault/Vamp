@@ -17,8 +17,12 @@ type
     tileSheet: Image
 
     doorId: string
+    worldId: string
 
     roomStack: seq[TiledMap]
+
+proc currentWorld* (world: GameWorld): string=
+  result = world.worldId
 
 proc movePlayerToDoor* (world: GameWorld)
 
@@ -60,6 +64,7 @@ proc newGameWorld* (): auto=
     chunks: @[],
     roomStack: @[],
     doorId: "",
+    worldId: "World1",
     tileSheet: assets.getImage("tiles"))
 
 proc update* (world: GameWorld)=

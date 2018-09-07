@@ -10852,6 +10852,7 @@ currentFrame	src/nimcache/Vamp_items.c	/^NI currentFrame;$/;"	m	struct:tyObject_
 currentFrame	src/nimcache/Vamp_player.c	/^NI currentFrame;$/;"	m	struct:tyObject_SpritecolonObjectType__eTjdHCb9c3Bxp5ROoIXYUog::__anon66::__anon67	file:
 currentFrame	src/nimcache/Vamp_renderable.c	/^NI currentFrame;$/;"	m	struct:tyObject_SpritecolonObjectType__eTjdHCb9c3Bxp5ROoIXYUog::__anon93::__anon94	file:
 currentIndex	src/nimcache/Vamp_dialog.c	/^NimStringDesc* currentIndex;$/;"	m	struct:tyObject_DialogBoxcolonObjectType__1vWJ8sPRufWkPsPFaJbeFg	file:
+currentWorld	src/world.nim	/^proc currentWorld* (world: GameWorld): string=$/;"	f
 current_color_1Ku8EEfkYShsn3Nn2FeiJA	src/nimcache/Vamp_art.c	/^tyTuple_0vYzovSm9aKYybyF8MRuBJQ current_color_1Ku8EEfkYShsn3Nn2FeiJA;$/;"	v
 current_color_1Ku8EEfkYShsn3Nn2FeiJA	vampSnap/src/nimcache/Vamp_art.c	/^tyTuple_0vYzovSm9aKYybyF8MRuBJQ current_color_1Ku8EEfkYShsn3Nn2FeiJA;$/;"	v
 current_gamestate_Bk9cMTIyfOAP4RFQX3K9aBrw	src/nimcache/Vamp_platform.c	/^tyEnum_GameState_Adh7fdjRyaWbOJslxsGt3w current_gamestate_Bk9cMTIyfOAP4RFQX3K9aBrw;$/;"	v
