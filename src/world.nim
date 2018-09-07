@@ -1,4 +1,6 @@
 import
+  os,
+  system,
   nim_tiled,
   entity/[door],
   ecs,
@@ -20,6 +22,15 @@ type
     worldId: string
 
     roomStack: seq[TiledMap]
+    
+var worlds = newSeq[string]()
+for ttype, thing in walkDir("assets/maps/"):
+  case ttype:
+  of pcDir:
+    worlds.add extractFilename(thing)
+  else: discard
+
+echo worlds
 
 proc currentWorld* (world: GameWorld): string=
   result = world.worldId
