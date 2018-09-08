@@ -73,6 +73,17 @@ proc init* (size: (int, int), title: string): Result=
     sdl.RendererAccelerated or
     sdl.RendererPresentVsync)
 
+  for i in 0..<sdl.numJoysticks():
+    if sdl.isGameController(i):
+      var controller = sdl.gameControllerOpen(i);
+      if (controller != nil):
+        echo "We have one!!"
+        break
+      else:
+        echo("Could not open gamecontroller ", i, " ", sdl.getError())
+    else:
+      echo "Controller number ", i, ", is not connected"
+
 proc update* ()=
   let now = sdl.getTicks().float
   let dt = (now - clock.last ) / 1000.0

@@ -14,6 +14,15 @@ import
     art
 
 const Entities = {
+    "QuestCoin": proc(x, y: float, w, h = 0.0): Entity=
+        result = EntityWorld.createEntity()
+        result.add(newBody(x, y, 16, 16))
+        result.add(newPhysicsBody())
+        result.add(newSprite(assets.getImage("entities"), newRegion(0, 0, 16, 16)))
+        result.add(Item(
+          itemType: ItemType.Weapon, itemID: ItemID.QuestCoin
+        )),
+
     "Player": proc(x, y: float, w, h = 0.0): Entity=
         result = EntityWorld.createEntity(true)
         result.add(newBody(x, y, 12, 27))
@@ -53,7 +62,7 @@ const Entities = {
         result.add(newSprite(img, newRegion(8, 5, 18, 27)))
         result.add(newAi(WiseOldWoman(
           showingActionBox: false 
-        ), oldLadyAiUpdate, oldLadyAiDraw))
+        ), load=oldLadyAiLoad, oldLadyAiUpdate, oldLadyAiDraw))
 
         var sprite = result.get Sprite
         sprite.color = (1.0, 0.0, 0.0, 1.0)

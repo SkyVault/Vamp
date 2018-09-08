@@ -454,7 +454,12 @@ proc inputUpdate* ()=
 
 proc inputHandleEvent* (ev: sdl.Event)=
   case ev.kind:
-    of sdl.KeyDown :
+
+    # Controller
+    of sdl.ControllerDeviceAdded:
+      echo "Controller connected"
+
+    of sdl.KeyDown:
         if ev.key.repeat > 0: return
         let key = getKeyInRange ev.key.keysym.sym.cint
 

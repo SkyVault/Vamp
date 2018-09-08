@@ -1,7 +1,21 @@
 {
     "OldLady": {
-        "0": {"text": "Hello there young man, do you want a cookie?", "options": [["Hell no", 2], ["Yeah sure!", 1]]},
-        "1": {"text": "Here you are!", "next": -1},
-        "2": {"text": "You are a very rude boy!", "next": -1}
+        "0": {
+            "text": "Hello there young man, could you help me?", 
+            "options": [["Yeah sure", 1], ["Nah I'm good", 2]]
+        },
+
+        "1": {
+            "text": "Go and fetch my thing from all the way across the level",
+            "next": -1,
+            "startQuest": "OldLady-Coin"
+        },
+
+        "2": {"text": "Oh... well okay then. Goodbye!", "next": -1}
+    },
+
+    "OldLadyTest": {
+        "0": {"text": "Hello", "next": 1},
+        "1": {"text": "World", "next": -1}
     }
 }

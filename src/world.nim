@@ -30,8 +30,6 @@ for ttype, thing in walkDir("assets/maps/"):
     worlds.add extractFilename(thing)
   else: discard
 
-echo worlds
-
 proc currentWorld* (world: GameWorld): string=
   result = world.worldId
 

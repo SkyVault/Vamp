@@ -1,5 +1,5 @@
 # import nimprof
-import 
+import
   sdl2/sdl,
   input,
   times,
@@ -12,7 +12,7 @@ import
   maths,
   math,
   random,
-  systems/[physics, enemies, player, renderable],
+  systems/[physics, enemies, player, renderable, quests],
   scenery,
   assets,
   platform,
@@ -63,7 +63,7 @@ while CurrentGameState() != Quiting:
 
   # if GameClock.ticks mod 100 == 0:
   #   echo GameClock.fps
-  
+
   platform.update()
 
   if CurrentGameState() != GameState.Paused:
@@ -72,6 +72,7 @@ while CurrentGameState() != Quiting:
     gameWorld.update()
 
   dialog.update()
+  quests.update()
 
   if isKeyPressed(Key.ESCAPE):
     Quit()
@@ -81,6 +82,7 @@ while CurrentGameState() != Quiting:
   Scenery.draw()
   gameWorld.drawBg()
   EntityWorld.draw()
+  quests.draw()
   gameWorld.drawFg()
   dialog.draw()
 

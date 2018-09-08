@@ -14,10 +14,15 @@ type
   ItemType* = enum
     Weapon,
     Food
+    
+  ItemID* {.pure.} = enum
+    None,
+    QuestCoin
 
 type
   Item* = ref object of Component
     itemType* : ItemType
+    itemID* : ItemID
 
 EntityWorld.createSystem(
   @["Item", "Sprite", "Body"],
@@ -36,7 +41,3 @@ EntityWorld.createSystem(
     sprite.offset.y = -y + math.cos(GameClock.timer * speed) * height
     sprite.rotation = math.cos(GameClock.timer * speed * 0.25) * 10
 )
-
-let ItemTable* = {
-  "Sword_1": 1
-}.toTable

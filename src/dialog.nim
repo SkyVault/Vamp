@@ -5,7 +5,8 @@ import
   maths,
   json,
   assets,
-  input
+  input,
+  systems/quests
 
 type
   DialogBoxHandlerO* = ref object
@@ -40,6 +41,8 @@ proc showDialog* (node: JsonNode, point: V2)=
     currentIndex: index
   ))
 
+template showingDialog* (): bool = dialogBox.dialogs.len > 0
+
 proc update* =
   if len(dialogBox.dialogs) == 0:
     return
@@ -61,8 +64,27 @@ proc update* =
       dialogBox.optionIndex = numOptions - 1
 
   if isKeyPressed(Key.Space):
-    platform.Resume()
-    discard dialogBox.dialogs.pop()
+    if data.hasKey "options":
+      let options = data["options"]
+      let o = options[dialogBox.optionIndex][1]
+
+      dialog.currentIndex = $o.getInt()
+      echo dialog.currentIndex
+
+    else:
+      if data.hasKey "startQuest":
+        startQuest data["startQuest"].getStr()
+
+      if data.hasKey "next":
+        let nextIndex = data["next"].getInt()
+        if nextIndex == -1:
+          platform.Resume()
+          discard dialogBox.dialogs.pop()
+        else:
+          dialog.currentIndex = $nextIndex
+      else:
+          platform.Resume()
+          discard dialogBox.dialogs.pop()
 
 proc draw* =
   if len(dialogBox.dialogs) == 0:
