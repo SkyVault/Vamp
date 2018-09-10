@@ -130,7 +130,13 @@ EntityWorld.createSystem(
       let reg = sprite.region
     
       R2D.setColor sprite.color
-      R2D.draw(img, reg, sprite.offset.x + body.x, sprite.offset.y +  body.y, sprite.rotation, sprite.flip)
+      R2D.draw(
+        img,
+        reg,
+        sprite.offset.x + body.x,
+        sprite.offset.y +  body.y,
+        sprite.rotation,
+        sprite.flip)
 
     else:
       let img = sprite.image

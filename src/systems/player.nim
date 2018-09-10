@@ -1,8 +1,10 @@
 import
   ../ecs, ../art,
   ../platform,
-  ../body,
   ../items,
+  ../body,
+  ../assets,
+  timed_destroy,
   renderable,
   physics,
   ../input,
@@ -30,7 +32,7 @@ EntityWorld.createSystem(
     var body = self.get Body
     var player = self.get Player
     self.get(Player).respawn = body.position
-    
+
     phys.solidsCollisionCallback = proc(o: PhysicsObject)=
       case o.physicsType:
       of PhysicsType.Spawn:
@@ -44,6 +46,10 @@ EntityWorld.createSystem(
     let phys = self.get PhysicsBody
     let sprite = self.get Sprite
     let player = self.get Player
+
+    ##
+    ## Movement
+    ##
 
     if isKeyDown(Key.LEFT):
       phys.velocity.x -= SPEED * GameClock.dt
@@ -62,6 +68,28 @@ EntityWorld.createSystem(
     if isKeyDown(Key.z) and phys.isOnGround and not phys.isOnLadder:
       phys.velocity.y -= 200.0
 
+    ##
+    ## Attacking
+    ##
+
+    if isKeyPressed(Key.x):
+      var sword = EntityWorld.createEntity()
+      sword.add(newBody(body.x, body.y + 5, 16, 16))
+      sword.add(newSprite(assets.getImage("entities"), newRegion(0, 16, 32, 16)))
+      sword.add(newTimedDestroy(0.15))
+
+      var ssprite = sword.get Sprite
+      var sbody   = sword.get Body
+
+      # flip if facing different direction
+      if phys.facing == Direction.Left:
+        ssprite.flip = true
+        sbody.position.x -= sbody.width
+
+    ##
+    ## Camera
+    ##
+
     var camera = MainCamera()
 
     let (ww, hh) = platform.windowSize()
@@ -73,11 +101,14 @@ EntityWorld.createSystem(
 
     let dx = ((camera.x + w * 0.5) - x)
     let dy = ((camera.y + h * 0.5) - y)
-    
+
     camera.position.x -= dx * 0.1
     camera.position.y -= dy * 0.1
 
-    # Handle collisions with other entities
+    ##
+    ## Other entity interactions
+    ##
+
     for other in phys.collisions:
       if other.has Item:
         if other.get(Item).itemType == Weapon:

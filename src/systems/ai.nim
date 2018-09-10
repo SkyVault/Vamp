@@ -36,4 +36,3 @@ proc newAi* (
     x_now: false,
     interactingWith: nil,
     hot: false)
-

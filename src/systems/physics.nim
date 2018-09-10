@@ -18,6 +18,10 @@ type
     Ladder,
     Water,
     Door
+  
+  Direction* {.pure.} = enum
+    Left
+    Right
 
   PhysicsObject* = ref object of Body
     physicsType*: PhysicsType
@@ -74,6 +78,16 @@ proc newPhysicsBody* (vx = 0.0, vy = 0.0): PhysicsBody=
     collisions: newSeq[Entity](),
     solidsCollisionCallback: proc(solid: PhysicsObject)= discard
   )
+
+proc facing* (phys: PhysicsBody): Direction{.inline.}=
+  result = Direction.Right
+  if phys.velocity.x > 0: return Direction.Right
+  if phys.velocity.x < 0: return Direction.Left
+
+proc facingSign* (phys: PhysicsBody): int{.inline.}=
+  case facing(phys):
+    of Direction.Left: -1
+    of Direction.Right: 1
 
 var tiledObjects    = newSeq[PhysicsObject]()
 var physicsEntities = newSeq[Entity]()
