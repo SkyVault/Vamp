@@ -9,7 +9,16 @@ import
     nim_tiled,
     strformat,
     entity/[door],
-    systems/[physics, ai, renderable, enemies, player],
+
+    systems/[
+      physics,
+      ai_system,
+      ai,
+      renderable,
+      enemies,
+      player
+    ],
+
     assets,
     art
 
@@ -22,7 +31,6 @@ const Entities = {
         result.add(Item(
           itemType: ItemType.Weapon, itemID: ItemID.QuestCoin
         )),
-
     "Player": proc(x, y: float, w, h = 0.0): Entity=
         result = EntityWorld.createEntity(true)
         result.add(newBody(x, y, 12, 27))

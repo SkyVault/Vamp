@@ -1,7 +1,9 @@
 import
   json,
   strformat,
-  ../ecs
+  tables,
+  ../ecs,
+  ../systems/ai
 
 const QUEST_JSON="""
 
@@ -24,6 +26,14 @@ type
 
 var quests = newSeq[Quest]()
 
+var QUESTS = {
+  "OldLady-Coin" : Quest(
+    qtype: QuestType.CheckOnInteraction,
+    check: proc(self: Quest, player: Entity)=
+      echo "Checking Old lady quest"
+  )
+}.toTable
+
 EntityWorld.createSystem(
   @["NONE"],
 
@@ -31,14 +41,24 @@ EntityWorld.createSystem(
     for quest in quests:
       case quest.qtype:
       of CheckOnInteraction:
-        discard
+        if quest.npc.has(Ai):
+          let ai = quest.npc.get Ai
+
+          if ai.interactingWith != nil:
+            quest.check(quest, getFirstThatMatch(@["Player"]))
+
       of CheckEachFrame:
         quest.check(quest, getFirstThatMatch(@["Player"]))
   ,
 )
 
-proc startQuest* (which: string)=
-  echo &"Starting Quest {which}"
+proc startQuest* (which: string, npc: Entity=nil)=
+  #doAssert(QUESTS.hasKey which)
+  
+  var quest = QUESTS[which]
+  if quest.qtype == QuestType.CheckOnInteraction:
+    quest.npc = npc
+  quests.add(quest)
 
 proc update* ()=
   discard

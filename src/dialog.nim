@@ -3,6 +3,7 @@ import
   platform,
   sdl2/sdl,
   maths,
+  ecs,
   json,
   assets,
   input,
@@ -18,6 +19,7 @@ type
     data: JsonNode
     currentIndex: string
     point: V2
+    target, player: Entity
 
 var dialogBox = DialogBoxHandlerO(
   showing: false,
@@ -26,7 +28,7 @@ var dialogBox = DialogBoxHandlerO(
 
 template DialogBoxHandler* = dialogBox
 
-proc showDialog* (node: JsonNode, point: V2)=
+proc showDialog* (node: JsonNode, point: V2, target, player: Entity)=
   platform.Pause()
   resetKey(Key.Space)
 
@@ -38,7 +40,9 @@ proc showDialog* (node: JsonNode, point: V2)=
   dialogBox.dialogs.add(DialogBox(
     data: node,
     point: point,
-    currentIndex: index
+    currentIndex: index,
+    target: target,
+    player: player
   ))
 
 template showingDialog* (): bool = dialogBox.dialogs.len > 0
@@ -69,11 +73,10 @@ proc update* =
       let o = options[dialogBox.optionIndex][1]
 
       dialog.currentIndex = $o.getInt()
-      echo dialog.currentIndex
 
     else:
       if data.hasKey "startQuest":
-        startQuest data["startQuest"].getStr()
+        startQuest(data["startQuest"].getStr(), dialog.target)
 
       if data.hasKey "next":
         let nextIndex = data["next"].getInt()
